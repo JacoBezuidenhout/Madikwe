@@ -1,0 +1,30 @@
+<!-- dash.html -->
+<br/>
+<div class="row">
+	<div class="col-md-4">
+		<div class="input-group">
+			<span class="input-group-addon" id="basic-addon1">Module</span>
+			<select class="form-control" ng-model="moduleFilter" ng-change="datapointsGet(node,moduleFilter,datapointLimit)">
+				<option value="" selected>All</option>
+				<option ng-repeat="module in node.modules" value="{{module}}">{{module}}</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="input-group">
+			<span class="input-group-addon" id="basic-addon1">Number of Datapoints</span>
+			<input type="number" class="form-control" ng-model="datapointLimit" ng-change="datapointsGet(node,moduleFilter,datapointLimit)" placeholder="Number of datapoints" value="20" />
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div ng-show="isActuator(module)" class="col-md-3">
+		<button type="button" class="btn btn-primary btn-lg" ng-click="toggleActuator(module)">Toggle Switch</button>
+	</div>
+	<graph data="graphData" height="400">
+		<x field="timestamp" type="Time" format="%c" title='Date'></x>
+		<y field="value" title='Value'></y>
+		<graph-legend></graph-legend>
+		<line field="module" label="module"></line>
+	</graph>
+</div>

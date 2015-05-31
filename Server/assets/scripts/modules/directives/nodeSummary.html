@@ -1,0 +1,56 @@
+<!-- nodeSummary.html -->
+<br/>
+<div class="row" ng-show="node">
+	<div class="col-md-6" style="height: 500px;">
+		<div class="col-md-12">
+			<div class="panel panel-info">
+			   <div class="panel-heading">
+			      <h3 class="panel-title">Module Count</h3>
+			   </div>
+			   <div class="panel-body">
+			      Count: {{node.modules.length}}
+			   </div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="panel panel-info">
+			   <div class="panel-heading">
+			      <h3 class="panel-title">Datapoint Count</h3>
+			   </div>
+			   <div class="panel-body">
+			      Count: {{datapointCount(node)}}
+			   </div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="panel panel-info">
+			   <div class="panel-heading">
+			      <h3 class="panel-title">Status</h3>
+			   </div>
+			   <div class="panel-body">
+			      Status: {{nodeStatus(node)}}
+			   </div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="panel panel-info">
+			   <div class="panel-heading">
+			      <h3 class="panel-title">Last Update</h3>
+			   </div>
+			   <div class="panel-body">
+			      Last: {{node.last}}
+			   </div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="panel panel-danger">
+		   <div class="panel-heading">
+		      <h3 class="panel-title">Alerts</h3>
+		   </div>
+		   <div class="panel-body" style="height: 400px; overflow-y:scroll;">
+		      <p ng-repeat="alert in node.alerts"><span class="glyphicon glyphicon-chevron-right"></span>{{alert.body}}</p>
+		   </div>
+		</div>
+	</div>
+</div>

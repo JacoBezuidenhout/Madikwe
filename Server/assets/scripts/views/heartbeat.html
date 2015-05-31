@@ -1,0 +1,79 @@
+    <link rel="stylesheet" href="styles/main.css">
+
+    <!-- Add your site or application content here -->
+<div class="header">
+  
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#/">IOTBox</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#/">Home</a></li>
+                    <li class="active"><a href="#/heartbeat">Heartbeat</a></li>
+                    <li><a ng-href="#/dashboard">Dashboard</a></li>
+                </ul>
+<!--              <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+              </form> -->
+               <ul class="nav navbar-nav navbar-right">
+                <li ng-hide="login"><a href="#/login">Login</a></li>
+                <li ng-show="login"><a href="/logout">Logout <small>{{user.email}}</small></a></li>
+<!--                 <li class="dropdown">
+                  <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">Alerts <span class="badge">{{newCount}}</span> <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </li> -->
+              </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+
+</div>
+
+<div class="jumbotron">
+  <h1>'IoT, 'IoT!</h1>
+  <p class="lead">
+    <!-- <img src="images/yeoman.png" alt="I'm Yeoman"><br> -->
+    Remote Gateway Monitoring
+  </p>
+  <!-- <p><a class="btn btn-lg btn-success" ng-href="#/dashboard">Lets see it!<span class="glyphicon glyphicon-ok"></span></a></p> -->
+</div>
+
+<div class="row">
+	<div class="col-md-offset-2 col-md-8">
+		<p ng-hide="subscribed" class="alert alert-warning text-center">Connecting...</p>
+		<p ng-show="subscribed * showMessage" class="alert alert-success text-center">Connected to server</p>
+	</div>
+
+	<div ng-hide="showMessage" class="col-md-6">
+		<h2 class="text-center">Gateways</h2>
+		<div style="max-height: 500px; overflow: auto;">
+			<p ng-repeat="gateway in gateways" class="alert alert-{{gateway.class}}">Serial: {{gateway.serial}} | Type: {{gateway.type}}</p>
+		</div>
+	</div>
+	<div ng-hide="showMessage" class="col-md-6">
+		<h2 class="text-center">Messages</h2>
+		<div style="max-height: 500px; overflow: auto;">
+			<p ng-repeat="message in messages" class="alert alert-{{message.class}}">{{message.body}}</p>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,10 @@
+<!-- actuators.html -->
+<br/>
+<div class="row" >
+	<div class="col-md-offset-1 col-md-4">
+	    <input ng-repeat="module in node.modules" ng-show="isActuator(module)" type="button" class="btn btn-{{getState(module)}}" ng-click="toggleActuator(module)" value="Toggle {{module}}" />
+	</div>	
+	<div class="col-md-offset-1 col-md-5">
+		<p ng-repeat="a in actuatorAlerts" class="alert alert-{{a.class}}">{{a.body}}</p>   
+	</div>
+</div>

@@ -1,0 +1,286 @@
+<style type="text/css">
+	.img_badge
+	{
+		width: 25px;
+	}
+</style>
+ <style>
+        .popup-label {
+            padding: 1px;
+            margin: 0;
+        }
+        .popup-label img {
+            border-radius: 4px;
+            padding: 0;
+            margin: 0;
+        }
+</style>
+<link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="bower_components/openlayers3/build/ol.css">
+<link rel="stylesheet" href="bower_components/angular-openlayers-directive/dist/angular-openlayers-directive.css" />
+
+<div class="header">
+  
+  	<nav class="navbar navbar-default">
+  		<div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="#">IOTBox</a>
+		    </div>
+
+		    <!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	            <ul class="nav navbar-nav">
+			        <li><a href="#/">Home</a></li>
+			        <li><a href="#/heartbeat">Heartbeat</a></li>
+			        <li class="active"><a ng-href="#/dashboard">Dashboard</a></li>
+			    </ul>
+<!-- 		      <form class="navbar-form navbar-left" role="search">
+		        <div class="form-group">
+		          <input type="text" class="form-control" placeholder="Search">
+		        </div>
+		        <button type="submit" class="btn btn-default">Submit</button>
+		      </form> -->
+		       <ul class="nav navbar-nav navbar-right">
+                <li ng-hide="login"><a href="#/login">Login</a></li>
+                <li ng-show="login"><a href="/logout">Logout <small>{{user.email}}</small></a></li>
+<!--                 <li class="dropdown">
+                  <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button">Alerts <span class="badge">{{newCount}}</span> <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </li> -->
+              </ul>
+		    </div><!-- /.navbar-collapse -->
+		</div>
+	</nav>
+
+</div>
+
+
+
+
+<div class="row">
+
+    <!-- Sidebar -->
+    <div class="col-md-4" style="overflow: hidden;">
+        <div class="panel panel-default">
+			<div class="panel-heading">
+		      <h4 class="panel-title">
+		        <a data-parent="#accordion" href="" aria-expanded="true" onclick="$('#collapseOne').toggle(200);">
+		          Gateways
+		        </a>
+		      </h4>
+			</div>
+			<div class="panel-body">
+
+		    <div ng-hide="gateways.length" class="alert alert-info" class="row">
+		    	<p>Please add a gateway</p>
+		    </div>
+
+
+			<div class="alert alert-{{gateway.class}}" ng-repeat="gateway in gateways" ng-show="gateways.length">
+				<a ng-click="getNodes(gateway.serial)" href="">
+						    <h4><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> #{{gateway.id}}</h4>
+						    <p><strong>Type:</strong> {{gateway.type}}</p>
+				</a>
+			</div>
+
+
+		  </div>
+		</div>	
+    </div>
+
+    <!-- Page Content -->
+	<div class="col-md-8">
+
+		<p ng-repeat="message in messages" ng-show="messages.length" class="alert alert-{{message.class}}">
+			{{message.body}}
+		</p>
+
+	    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+	    <div ng-repeat="message in messages" ng-show="message" class="alert alert-{{message.class}}" role="alert">
+	  		{{message.message}}
+		</div>
+
+	    <!-- <a href="#menu-toggle" class="btn btn-default" style="position: fixed; right: 10px; top: 10px;" id="menu-toggle">Toggle Menu</a> -->
+	        <div>
+	            <div class="row">
+	                <div class="col-md-12">
+	                    <div class="panel panel-default">
+						     <div class="panel-heading" role="tab" id="headingOne">
+						      <h4 class="panel-title">
+						        <a data-parent="#accordion" href="" aria-expanded="true" onclick="$('#collapseOne').toggle(200);">
+						          Nodes
+						        </a>
+						      </h4>
+						    </div>
+							<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							  	<div class="panel-body" style="max-height: 250px; overflow-y:scroll;">
+								    <div class="alert alert-info" ng-hide="nodes.length > 0" class="row">
+								    	<p>Please select a gateway to see it's nodes</p>
+								    </div>
+							    	<div ng-show="nodes.length > 0" class="row">
+											<div class="col-sm-6 col-md-3" ng-repeat="node in nodes">
+										    	<div class="thumbnail">
+													<a ng-animate="'animate'" href="" ng-click="drawGraph(node._id)">
+												      	<img src="/images/{{node.type}}.png" style="width:75px;" alt="{{node.type}}">
+												      	<div class="caption" style="padding-top:0px;">
+											        		<h4 class="text-center">#{{node._id}}</h4>
+													</a>
+										        	<p class="text-center"><small>Type: {{node.type}}</small></p>
+											        <div class="text-center">
+												        <p ng-show="node.modules">
+												        	<img ng-repeat="module in node.modules" ng-click="drawGraph(node._id,module)" class="img_badge" src="/images/48x48/{{module}}.png"/> 
+												        </p>
+												        <button class="btn btn-primary btn-sm" ng-click="editNode(node._id);">
+														 	 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit
+														</button>
+											        </div>
+										      	</div>
+										    </div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+	                </div>
+	            </div>
+	        </div>
+
+			<div class="row" ng-show="n.serial">
+				<div class="col-lg-12">
+	                <div class="panel panel-default">
+					  	<div class="panel-heading">
+					    	<h3 class="panel-title">
+						    	<a data-parent="#accordion" href="" onclick="$('#collapseEdit').toggle(200);">
+							    	Edit Node
+							    </a>
+					    	</h3>
+					  	</div>
+					  	<div id="collapseEdit" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						  	<div class="panel-body">
+							  	<div class="col-md-4 text-center">
+							  		<img src="/images/{{n.type}}.png" class="img-responsive">
+					        		<h4 class="text-center"><strong>{{n.serial}}</strong></h4>
+						        	<p class="text-center"><small><strong>Type:</strong> <br/>{{n.type}}</small></p>		
+						        	<p class="text-center"><small><strong>CreatedAt:</strong> <br/>{{n.createdAt}}</small></p>		
+						        	<p class="text-center"><small><strong>UpdatedAt:</strong> <br/>{{n.updatedAt}}</small></p>		
+							  	</div>
+							  	<div class="col-md-8  text-center">
+					        		<h4 class="text-center">Settings</h4>
+
+					        		<table class="table">
+					        			<tr ng-repeat="setting in n.settings" class="{{setting.class}}" >
+					        				<td>
+					        					<select class="form-control" ng-model="setting.module">
+					        						<option value="{{setting.module}}">{{setting.module}}</option>
+					        						<option ng-repeat="m in moduleTypes" ng-hide="setting.module == m" value="{{m}}">{{m}}</option>
+					        					</select>
+					        				</td>
+					        				<td>
+					        					<select class="form-control" ng-model="setting.key" ng-change="setting.value = moduleOptionDefaults[setting.key]">
+					        						<option value="{{setting.key}}">{{setting.key}}</option>
+					        						<option ng-repeat="key in moduleOptions" ng-hide="setting.key == key" value="{{key}}">{{key}}</option>
+					        					</select>
+					        				</td>
+					        				<td>
+								    			<div class="input-group" ng-repeat="set in setting.value">
+												  	<span class="input-group-addon"  style="width:80px;" ng-bind="set.key"></span>
+									    			<input type="number" class="form-control" ng-model="set.value" />
+												</div>
+											</td>
+					        				<td>
+								    			<input type="button" class="form-control btn btn-danger" ng-click="setting.class = 'danger'" value="X" />
+											</td>
+					        			</tr>
+					        		</table>
+				    				
+									</br>
+									<div class="text-center">
+										<button class="btn btn-info" ng-click="addSetting();">Add</button>
+										<button class="btn btn-success" ng-click="saveNode();">Save</button>
+										<button class="btn btn-danger" ng-click="n=0">Cancel</button>
+									</div>
+							  	</div>
+			    			</div>	
+		    			</div>	
+		        	</div>
+				</div>
+			</div>
+
+			<div class="row" ng-show="graphData.length">
+				<div class="col-lg-12">
+	                <div class="panel panel-default">
+					  	<div class="panel-heading">
+						    <div class="row">
+						    	<div class="col-md-6">
+							    	<h3 class="panel-title">
+								    	<a data-parent="#accordion" href="" onclick="$('#collapseTwo').toggle(200);">
+									    	Graph
+									    </a>
+							    	</h3>
+						    	</div>
+						    	<div class="col-md-6">
+							    	<div class="input-group">
+									  	<span class="input-group-addon" id="basic-addon1">Number of Datapoints</span>
+						    			<input type="number" class="form-control" ng-model="datapointLimit" ng-change="drawGraph(currentNode,currrentModule)" placeholder="Number of datapoints" value="100" />
+									</div>
+						    	</div>
+					    	</div>
+
+					  	</div>
+					  	<div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						  	<div class="panel-body">
+								<div ng-show="isActuator(module)" class="well">
+									<button type="button" class="btn btn-primary btn-lg" ng-click="toggleActuator(module)">Toggle Switch</button>
+								</div>
+									<graph data="graphData" height=400>
+								        <x field="timestamp" type="Time" format="%c" title='Date'></x>
+								        <!-- <x field="timestamp" type="Time" format="%Y-%m-%dT%H:%M:%S.%LZ"></x> -->
+								        <y field="value" title='Value'></y>
+								        <graph-legend></graph-legend>
+								        <line field="module" label="module"></line>
+								    </graph>
+			    			</div>	
+		    			</div>	
+		        	</div>
+				</div>
+			</div>
+
+			<div class="row" ng-show="graphData.length">
+				<div class="col-lg-12">
+	                <div class="panel panel-default">
+					  	<div class="panel-heading">
+					    	<h3 class="panel-title">
+						    	<a data-parent="#accordion" href="" onclick="$('#collapseThree').toggle(200);">
+							    	Map
+							    </a>
+					    	</h3>
+					  	</div>
+					  	<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						  	<div class="panel-body">
+								<openlayers ol-center="center" height="400px" width="100%">
+									<ol-marker ng-repeat="marker in markers" ol-marker-properties="marker" ></ol-marker>		
+								</openlayers>
+			    			</div>	
+		    			</div>	
+		        	</div>
+				</div>
+			</div>
+
+	    </div>
+	    <!-- /#page-content-wrapper -->
+	</div>
+</div>

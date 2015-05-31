@@ -1,0 +1,23 @@
+<div class="col-md-3 well" style="height: 300px;">
+	<h4 class="text-center">Gateways</h4>
+	<div class="input-group">
+	  	<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+	  	<input type="text" class="form-control" ng-model="gatewaySearch" placeholder="Search" aria-describedby="basic-addon1">
+	</div>
+	<br/>
+	<div class="col-md-12" ng-hide="gateways.length" style="height: 200px; overflow-y: scroll; overflow-x: hidden;">
+		<div class="alert alert-info">No Gateways found</div>
+	</div>
+	<div class="col-md-12" ng-show="gateways.length" style="max-height: 150px; overflow-y: scroll; overflow-x: hidden;">
+
+		<div class="media" ng-repeat="g in gateways | filter:gatewaySearch">
+		    <a href="" ng-click="setGateway(g)">
+			  <div class="media-body">
+			    <h4 class="media-heading">#{{g.type}}</h4>
+			    	{{g.id}}
+			  </div>
+		    </a>
+		</div>
+
+	</div>
+</div>

@@ -1,0 +1,11 @@
+<form role="form" action="/auth/local" method="post">
+  <input type="text" name="identifier" placeholder="Username or Email">
+  <input type="password" name="password" placeholder="Password">
+  <button type="submit">Sign in</button>
+</form>
+
+  <h4>You can also use one of these...</h4>
+
+  <div ng-repeat="obj in Object.keys(providers)">
+    <a href="/auth/{{obj.slug}}" role="button">{{obj.name}}</a>
+  </div>

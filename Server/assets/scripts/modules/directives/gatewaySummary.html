@@ -1,0 +1,56 @@
+<!-- gatewaySummary.html -->
+<br/>
+<div class="row" ng-show="gateway">
+	<div class="col-md-8" style="height: 200px;">
+		<div class="col-md-6">
+			<div class="panel panel-info">
+			   <div class="panel-heading">
+			      <h3 class="panel-title">Node Count</h3>
+			   </div>
+			   <div class="panel-body">
+			      Count: {{gateway.nodes.length}}
+			   </div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-info">
+			   <div class="panel-heading">
+			      <h3 class="panel-title">Module Count</h3>
+			   </div>
+			   <div class="panel-body">
+			      Count: {{moduleCount(gateway)}}
+			   </div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-info">
+			   <div class="panel-heading">
+			      <h3 class="panel-title">API Calls</h3>
+			   </div>
+			   <div class="panel-body">
+			      Count: {{apiCount(gateway)}}
+			   </div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-info">
+			   <div class="panel-heading">
+			      <h3 class="panel-title">Last Update</h3>
+			   </div>
+			   <div class="panel-body">
+			      Last: {{gateway.last}}
+			   </div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="panel panel-danger">
+		   <div class="panel-heading">
+		      <h3 class="panel-title">Alerts</h3>
+		   </div>
+		   <div class="panel-body" style="height: 160px; overflow-y:scroll;">
+		      <p ng-repeat="alert in gateway.alerts"><span class="glyphicon glyphicon-chevron-right"></span>{{alert.body}}</p>
+		   </div>
+		</div>
+	</div>
+</div>

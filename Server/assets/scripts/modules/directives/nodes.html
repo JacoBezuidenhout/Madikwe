@@ -1,0 +1,33 @@
+<br/>
+	<div class="row">
+		<div class="col-md-6">	
+			<div class="input-group">
+			  	<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-down" aria-hidden="true"></span></span>
+			  	<input type="text" class="form-control" ng-model="nodeSort" placeholder="Sort" aria-describedby="basic-addon1">
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="input-group">
+			  	<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+			  	<input type="text" class="form-control" ng-model="nodeSearch" placeholder="Search" aria-describedby="basic-addon1">
+			</div>
+		</div>
+	</div>
+	<br/>
+	<div class="row-fluid" style="height: 150px; overflow-y:scroll;">
+		<div class="col-md-4 panel panel-info" ng-repeat="n in nodes | filter:nodeSearch">
+			<a href="" ng-click="nodeSet(n)">
+				<div class="row">
+					<div class="col-md-12">
+					    <h4>#{{n.serial}}</h4>
+					    <p>{{n.type}}</p>
+					    	<div class="col-md-2" ng-repeat="m in n.modules">
+					    		<p>
+					    			<img src="/images/48x48/{{m}}.png" style="max-width:250%" />
+					   			 </p>
+					    	</div>
+					</div>
+				</div>
+			</a>	
+		</div>
+	</div>

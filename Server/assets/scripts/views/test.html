@@ -1,0 +1,83 @@
+<div class="header">
+	
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">IOT Box</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				</div><!--/.navbar-collapse -->
+			</div>
+		</nav>
+	</div>
+	<br/>
+	<br/>
+	<br/>
+	<!-- <gateways data="user"></gateways> -->
+	<div ng-controller="GatewayCtrl">
+		<div class="row">
+		<gateways data="gateways" fn="setGateway"></gateways>
+		<div class="col-md-8 well" style="height: 300px;">
+			<div role="tabpanel">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active">
+						<a href="" data-target="#summary" aria-controls="summary" role="tab" data-toggle="tab">Summary</a>
+					</li>
+					<li role="presentation">
+						<a href="" data-target="#nodes" aria-controls="nodes" role="tab" data-toggle="tab">Nodes <span class="badge">{{nodes.length}}</span></a>
+					</li>
+					<li role="presentation">
+						<a href="" data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
+					</li>
+				</ul>
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane active" id="summary">
+					<gatewaySummary data="gateway"></gatewaySummary>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="nodes">
+					<nodes data="nodes" fn="nodeSet"></nodes>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="settings">
+				<gatewaySettings data="gateway" fn="saveGateway"></gatewaySettings>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="row" ng-controller="NodeCtrl" ng-show="node">
+<nodeDetails data="node"></nodeDetails>
+<div class="col-md-7 well" style="height: 600px;">
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="" data-target="#nodeSummary" aria-controls="nodeSummary" role="tab" data-toggle="tab">Node Summary</a></li>
+		<li role="presentation"><a href="" ng-click="datapointsGet(node,'',20)" data-target="#datapoints" aria-controls="datapoints" role="tab" data-toggle="tab">Datapoints</a></li>
+		<li role="presentation"><a href="" ng-click="datapointsGet(node,'',20)" data-target="#graph" aria-controls="graph" role="tab" data-toggle="tab">Graphs</a></li>
+		<li role="presentation"><a href="" data-target="#actuators" aria-controls="actuators" role="tab" data-toggle="tab">Actuators</a></li>
+		<li role="presentation"><a href="" data-target="#nodeSettings" aria-controls="nodeSettings" role="tab" data-toggle="tab">Node Settings</a></li>
+	</ul>
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="nodeSummary"><nodesummary data="node"></nodesummary></div>
+		<div role="tabpanel" class="tab-pane" id="datapoints">
+			<datapoints node="node" data="datapoints" fn="datapointsGet"></datapoints>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="graph">
+			<graphs node="node" data="datapoints" fn="datapointsGet"></graphs>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="actuators">
+			<actuators data="node" alerts="actuatorAlerts" fn="isActuator" gn="getState" hn="toggleActuator"></actuators>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="nodeSettings">
+			<nodeSettings data="node"></nodeSettings>
+		</div>
+	</div>
+</div>
+</div>
+</div>
