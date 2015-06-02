@@ -10,6 +10,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/viewport-grid/dist/viewport-grid.css" />
+    
 
     <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}</style>
     <!-- endbower -->
@@ -17,6 +18,7 @@
     <!-- build:css(.tmp) styles/main.css -->
 
     <link href="styles/simple-sidebar.css" rel="stylesheet">
+    <link href="styles/ol.css" rel="stylesheet">
     <!-- endbuild -->
   </head>
   <body ng-app="iotboxApp">
@@ -26,7 +28,7 @@
 
 
 
-    <div class="container">
+    <div class="container-fluid">
     <div ng-view=""></div>
     </div>
 
@@ -48,6 +50,7 @@
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/js/dependencies/sails.io.js"></script>
+    <!-- // <script src="/js/dependencies/ol.js"></script> -->
     <script src="/js/dependencies/bootstrap.min.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -60,10 +63,6 @@
     <script src="/bower_components/openlayers3/build/ol.js"></script>
     <script src="/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="/bower_components/angular-openlayers-directive/dist/angular-openlayers-directive.js"></script>
-
-
-
-
 
     <!-- endbower -->
     <!-- endbuild -->

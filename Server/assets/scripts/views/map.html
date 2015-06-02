@@ -1,0 +1,247 @@
+<div class="container-fluid" style="height:100%">
+
+<div class="row-fluid" style="height:100%">
+  <div class="col-md-9">
+    <div id="map" class="map" style="width:100%"></div>
+  </div>
+  <div id="legend" class="col-md-3">
+    <h2 class="text-center">Layers</h2>
+    <table id="legendTable" class="table">
+      <tr><td><strong>Layer Name</strong></td><td><strong>Hide</strong></td><td><strong>Show</strong></td><td><strong>Toggle</strong></td></tr>
+    </table>
+  </div>
+</div>
+
+</div>
+<script>
+var image = new ol.style.Circle({
+  radius: 1,
+  fill: null,
+  stroke: new ol.style.Stroke({color: 'red', width: 1})
+});
+
+var styles = {
+  'Point': {
+    'TrackerA': [new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 1,
+        fill: null,
+        stroke: new ol.style.Stroke({color: 'blue', width: 1})
+      })
+    })],
+    'TrackerB': [new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 1,
+        fill: null,
+        stroke: new ol.style.Stroke({color: 'blue', width: 1})
+      })
+    })],
+    'TrackerC': [new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 1,
+        fill: null,
+        stroke: new ol.style.Stroke({color: 'blue', width: 1})
+      })
+    })],
+    'TrackerD': [new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 1,
+        fill: null,
+        stroke: new ol.style.Stroke({color: 'blue', width: 1})
+      })
+    })],
+    'TrackerE': [new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 1,
+        fill: null,
+        stroke: new ol.style.Stroke({color: 'blue', width: 1})
+      })
+    })],
+    'TrackerF': [new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 1,
+        fill: null,
+        stroke: new ol.style.Stroke({color: 'blue', width: 1})
+      })
+    })]
+  },
+  'LineString': {
+    'TrackerA' :  [new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'green',
+        width: 1
+      })
+    })],
+    'TrackerB' :  [new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'red',
+        width: 1
+      })
+    })],
+    'TrackerC' :  [new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'blue',
+        width: 1
+      })
+    })],
+    'TrackerD' :  [new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'aqua',
+        width: 1
+      })
+    })],
+    'TrackerE' :  [new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'aqua',
+        width: 1
+      })
+    })],
+    'TrackerF' :  [new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'orange',
+        width: 1
+      })
+    })]
+  },
+  'MultiLineString': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'green',
+      width: 1
+    })
+  })],
+  'MultiPoint': [new ol.style.Style({
+    image: image
+  })],
+  'MultiPolygon': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'yellow',
+      width: 1
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(255, 255, 0, 0.1)'
+    })
+  })],
+  'Polygon': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'blue',
+      lineDash: [4],
+      width: 3
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(0, 0, 255, 0.1)'
+    })
+  })],
+  'GeometryCollection': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'magenta',
+      width: 2
+    }),
+    fill: new ol.style.Fill({
+      color: 'magenta'
+    }),
+    image: new ol.style.Circle({
+      radius: 10,
+      fill: null,
+      stroke: new ol.style.Stroke({
+        color: 'magenta'
+      })
+    })
+  })],
+  'Circle': [new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'red',
+      width: 2
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(255,0,0,0.2)'
+    })
+  })]
+};
+
+var styleFunction = function(feature, resolution) {
+  console.log(feature.n);
+  return styles[feature.getGeometry().getType()][feature.n.tracker];
+};
+
+var vectorLayers = {};
+
+var hideLayer = function(id)
+{
+  vectorLayers[id].setVisible(false);
+}
+
+var toggleLayer = function(id)
+{
+  vectorLayers[id].setVisible(!vectorLayers[id].getVisible());
+}
+
+var showLayer = function(id)
+{
+  vectorLayers[id].setVisible(true);
+}
+
+var map = new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  target: 'map',
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+io.socket.get('/map/?limit=1', function(s){
+  io.socket.on('map',function(d)
+  {
+    if (d.id == -1)
+    {
+      var geojsonObject = d.data.data;
+
+      if (geojsonObject.features.length)
+      {
+        var tID = geojsonObject.features[0].serial;
+
+        var vectorSource = new ol.source.Vector({
+          features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+        });
+
+        vectorLayers[tID] = new ol.layer.Vector({
+          source: vectorSource,
+          style: styleFunction
+        });
+
+        $( "#legendTable" ).append( "<tr><td>"
+          +tID
+          +"</td><td>"
+          +"<a onclick='hideLayer(\"" + tID + "\")'>" + tID + "</a>"
+          +"</td><td>"
+          +"<a onclick='showLayer(\"" + tID + "\")'>" + tID + "</a>"
+          +"</td><td>"
+          +"<a onclick='toggleLayer(\"" + tID + "\")'>" + tID + "</a>"
+          +"</td></tr>" );
+        map.addLayer(vectorLayers[tID]);
+      }
+      if (d.id == 0)
+      {
+        var feature = new ol.Feature({
+          geometry: new ol.geom.Point(d.data.coord)
+        });
+        vectorLayers[id].getSource().addFeature(feature);
+      }
+    }
+  });
+  io.socket.get('/map/all', function(s){});
+});
+
+
+
+
+</script>

@@ -6,6 +6,7 @@
  */
 
 var io = require('socket.io')(5000);
+var proj4 = require('proj4');
 var checksum = require('checksum');
 var interval = 1000;
 var clients = {};
@@ -29,46 +30,95 @@ io.on('connection', function (socket)
     // });
   }
 
-  socket.on('login', function (msg) 
+  socket.on('NI', function (msg) 
   {
-    // console.log('Logging In...', msg, Datapoint.socket);
-    Gateway.findOrCreate({id: msg.id}, msg).exec(function createFindCB(err,gateway)
-    {
-      // console.log('Gateway', gateway, "logged in.");
-
-      gateway.lastConnect = new Date();
-      gateway.save();
-
-      login = true;
-
-      gateway.success = 'success';
-      gateway.interval = interval;
-      
-      socket.emit('login',gateway);
-      
-      socket.gateway = gateway;
-      var client = {};
-      clients[gateway.id] = socket;
-      socket.gateway.lastHeartbeat = new Date();
-
-      var message = {body: "Gateway " + socket.gateway.id + " logged in.", class: "success"};
-      var gateway = {id: socket.gateway.id, type: socket.gateway.type, class: "success"};
-      Heartbeat.publishCreate({id: -1, message: message, gateway: gateway});
-
-      ping(); 
+    msg.gateway = 'HillHouse';
+    Node.findOrCreate({serial:msg.node},{serial: msg.node, type: msg.type, apiCount: 0}).exec(function (err,node){
+      node.NI = msg.value;
+      node.save();
     });
   });
 
+  var trackers = {};
+
+  var properties = {
+    "stroke": "#00ff00",
+    "stroke-width": 2,
+    "stroke-opacity": 0.5,
+    "tracker": "A"
+  }
+  var geoLine = {
+    "type": "LineString",
+    "coordinates": []
+  }
+  var geoPoint = {
+    "type": "LineString",
+    "coordinates": []
+  }
+
+  socket.on('gps', function (msg) 
+  {
+    properties.tracker = msg.node;
+    properties.stroke = msg.color;
+    
+    geoLine.coordinates = [];
+
+
+    var myDate = new Date();
+    myDate.setMinutes(myDate.getMinutes() - 10);
+
+    Map.findOrCreate(
+      {serial: msg.node, "geometry.type": "LineString", "updatedAt" : { $gte : myDate }},
+      {serial: msg.node, type: 'Feature', geometry: geoLine, properties: properties, trackerType: msg.type, }
+    )
+    .exec(function (err,res){
+      // console.log('GPS',res);
+      var c = proj4('EPSG:3857', [msg.lat,msg.lon]);
+      res.geometry.coordinates.push(c);
+      res.save();
+
+    });
+
+    // Map.create({serial: msg.node, type: 'Feature', geometry: geoLine, properties: properties, trackerType: msg.type, }).exec(function (err,res){
+    //   console.log('GPS',res);
+    // });
+
+        
+  
+  });
+
+
+// {
+//   "type": "FeatureCollection",
+//   "features": [
+//     {
+//       "type": "Feature",
+//       "properties": {
+//         "marker-color": "#00ff00",
+//         "marker-size": "small",
+//         "marker-symbol": "minefield",
+//         "node": "NodeSerial"
+//       },
+//       "geometry": {
+//         "type": "Point",
+//         "coordinates": [
+//           26.577987670898438,
+//           -24.703484357475112
+//         ]
+//       }
+//     },
+    
+//   ]
+// }
+
   socket.on('data', function (msg) 
   {
-    cs = checksum(JSON.stringify(msg));
-    socket.emit('data',cs);
-    msg.gateway = socket.gateway.id;
-    socket.gateway.lastHeartbeat = new Date();
+    msg.gateway = 'HillHouse';
     Node.findOrCreate({serial:msg.node},{serial: msg.node, type: msg.type, apiCount: 0}).exec(function createFindCB(err,node){
       
+
       // console.log(err,msg,node);
-      console.log(msg.module);
+      // console.log(msg.module);
 
       var flag = false;
       if (node.modules)
@@ -83,6 +133,7 @@ io.on('connection', function (socket)
         node.modules = [];
       }
 
+
       node.apiCount = node.apiCount || 0;
       node.apiCount++;
       
@@ -91,10 +142,10 @@ io.on('connection', function (socket)
 
       node.save();
 
-      Gateway.findOne({id: socket.gateway.id},function(err,data){
+      Gateway.findOne({serial: 'HillHouse'},function(err,data){
 
         flag = false;
-        console.log(data);
+        // console.log(data);
 
         if (data.nodes)
         {
@@ -133,90 +184,25 @@ io.on('connection', function (socket)
 
         data.save();
 
-        Datapoint.create(msg).exec(function createCB(err,created){
-          // console.log('Datapoint created',created,cs);
-          Datapoint.publishCreate(created);
-        });
+
+          Datapoint.create(msg).exec(function createCB(err,created){
+            // console.log('Datapoint created',created,cs);
+            Datapoint.publishCreate(created);
+          });
+        
       });
 
 
     });
   });
 
-  socket.on('ping', function (msg) {
-    socket.gateway.lastHeartbeat = new Date();
-
-    if (pinging == 0) 
-    {
-      var message = {body: "Gateway " + socket.gateway.id + " started to ping back.", class: "info"};
-      var gateway = {id: socket.gateway.id, type: socket.gateway.type, class: "info"};
-      Heartbeat.publishCreate({id: -1, message: message, gateway: gateway});
-      ping();
-    }
-
-    if (pinging == 10) 
-    {
-      var message = {body: "Gateway " + socket.gateway.id + " is running well.", class: "success"};
-      var gateway = {id: socket.gateway.id, type: socket.gateway.type, class: "success"};
-      Heartbeat.publishCreate({id: -1, message: message, gateway: gateway});
-    }
-
-    pinging++;    
-
-  });
-
-  var ping = function()
-  {
-  	var now = new Date();
-  	var diff = now.getTime() - socket.gateway.lastHeartbeat.getTime();
-  	if (diff > interval*5)
-  	{
-  		    console.log('ALERT! No pingback');
-  
-  		    var message = {body: "Gateway " + socket.gateway.id + " did not ping back.", class: "warning"};
-          var gateway = {id: socket.gateway.id, type: socket.gateway.type, class: "warning"};
-          Heartbeat.publishCreate({id: -1, message: message, gateway: gateway});
-  
-          socket.emit('ping',pinging);
-          pinging = 0;
-  	}
-  	else
-  	{
-      socket.emit('ping',pinging);
-      setTimeout(ping, Math.max(1000,(interval*5)-diff));
-  	}
-  }
-
   socket.on('disconnect', function () {
-  	if (login)
-    {     
-      setTimeout(function()
-      {
-      
-        var message = {body: "Gateway " + socket.gateway.id + " disconnected.", class: "danger"};
-        var gateway = {id: socket.gateway.id, type: socket.gateway.type, class: "danger"};
-        Heartbeat.publishCreate({id: -1, message: message, gateway: gateway});
-      
-      },(interval*5) + 1000);
-    }
-    console.log('user disconnected');
+    // console.log('user disconnected');
   });
+
 });
 
 module.exports = {
-  sendSettings : function(req,res)
-  {
-    var params = req.params.all();
-    console.log("settings",clients);
-    clients[params.gateway].emit('settings',params.node);
-    res.json({success:true});
-  },
-  sendCommand : function(req,res)
-	{
-		var params = req.params.all();
-    console.log("settings",clients);
-		clients[params.gateway].emit('cmd',params.cmd);
-		res.json({success:true});
-	}
+
 };
 

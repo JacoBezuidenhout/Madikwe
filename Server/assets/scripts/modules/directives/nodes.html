@@ -1,12 +1,12 @@
 <br/>
 	<div class="row">
-		<div class="col-md-6">	
+		<!-- <div class="col-md-6">	
 			<div class="input-group">
 			  	<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-down" aria-hidden="true"></span></span>
 			  	<input type="text" class="form-control" ng-model="nodeSort" placeholder="Sort" aria-describedby="basic-addon1">
 			</div>
-		</div>
-		<div class="col-md-6">
+		</div> -->
+		<div class="col-md-offset-6 col-md-6">
 			<div class="input-group">
 			  	<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
 			  	<input type="text" class="form-control" ng-model="nodeSearch" placeholder="Search" aria-describedby="basic-addon1">
@@ -20,7 +20,7 @@
 				<div class="row">
 					<div class="col-md-12">
 					    <h4>#{{n.serial}}</h4>
-					    <p>{{n.type}}</p>
+					    <p>{{n.type}} | {{n.NI || 'None'}}</p>
 					    	<div class="col-md-2" ng-repeat="m in n.modules">
 					    		<p>
 					    			<img src="/images/48x48/{{m}}.png" style="max-width:250%" />

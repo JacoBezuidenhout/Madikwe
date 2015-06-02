@@ -9,7 +9,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">IOT Box</a>
+				<a class="navbar-brand" href="/">IOT Box</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				</div><!--/.navbar-collapse -->
@@ -19,6 +19,7 @@
 	<br/>
 	<br/>
 	<br/>
+<div class="row">
 	<!-- <gateways data="user"></gateways> -->
 	<div ng-controller="GatewayCtrl">
 		<div class="row">
@@ -34,7 +35,7 @@
 						<a href="" data-target="#nodes" aria-controls="nodes" role="tab" data-toggle="tab">Nodes <span class="badge">{{nodes.length}}</span></a>
 					</li>
 					<li role="presentation">
-						<a href="" data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
+						<a href="" data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Map</a>
 					</li>
 				</ul>
 				<!-- Tab panes -->
@@ -45,9 +46,11 @@
 				<div role="tabpanel" class="tab-pane" id="nodes">
 					<nodes data="nodes" fn="nodeSet"></nodes>
 				</div>
-				<div role="tabpanel" class="tab-pane" id="settings">
+				<!-- <div role="tabpanel" class="tab-pane" id="settings">
+				
+					<map></map>
 				<gatewaySettings data="gateway" fn="saveGateway"></gatewaySettings>
-			</div>
+				</div> -->
 		</div>
 	</div>
 </div>
@@ -78,6 +81,7 @@
 			<nodeSettings data="node"></nodeSettings>
 		</div>
 	</div>
+</div>
 </div>
 </div>
 </div>

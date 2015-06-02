@@ -1,17 +1,9 @@
 <!-- map.html -->
-<div class="panel panel-default">
-  	<div class="panel-heading">
-    	<h3 class="panel-title">
-	    	<a data-parent="#accordion" href="" onclick="$('#collapseThree').toggle(200);">
-		    	Map
-		    </a>
-    	</h3>
-  	</div>
-  	<div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-	  	<div class="panel-body">
-			<openlayers ol-center="center" height="400px" width="100%">
-				<ol-marker ng-repeat="marker in markers" ol-marker-properties="marker" ></ol-marker>		
-			</openlayers>
-		</div>	
-	</div>	
+<div ng-controller="MapCtrl">
+	<openlayers ol-center="center" height="500px" width="400px">
+		<ol-layer ol-layer-properties="geojson"></ol-layer>
+	</openlayers>
+	<h1>Layers inline GeoJSON example</h1>
+     <button ng-click="update()">Load France GeoJSON</button>
+     <p>You can load inline GeoJSON as new layer easily, look at the source of the <strong>layers</strong> attribute:</p>
 </div>

@@ -65,7 +65,7 @@ angular.module('iotboxApp')
                       ],
                       type : 'sensor' 
                     },
-        'BATE1_0' : { 
+        'BatteryA1' : { 
                       values : 
                       [
                         {key : 'Delta', defaults : [{key: 'Time', value: 100},{key: 'Value', value: 4}] },
@@ -74,7 +74,7 @@ angular.module('iotboxApp')
                       ],
                       type : 'sensor' 
                     },
-        'HUMI1_0' : { 
+        'RSSI' : { 
                       values : 
                       [
                         {key : 'Delta', defaults : [{key: 'Time', value: 100},{key: 'Value', value: 4}] },
@@ -92,7 +92,7 @@ angular.module('iotboxApp')
                       ],
                       type : 'sensor' 
                     },
-        'TEMP1_0' : { 
+        'Temperature' : { 
                       values : 
                       [
                         {key : 'Delta', defaults : [{key: 'Time', value: 100},{key: 'Value', value: 4}] },
@@ -190,7 +190,7 @@ angular.module('iotboxApp')
 
       $scope.datapointsGet = function(n,m,l)
       {
-        console.log('datapointsGet');
+        console.log('datapointsGet',n.serial);
         //_id = serial
         var query = "/datapoint/?node=" + n.serial;
         if (m != "")
@@ -215,26 +215,73 @@ angular.module('iotboxApp')
       };
 
     }])
-  	.directive('gateways', function() {
-  		return {
-  			scope: {
+    .controller('MapCtrl', ['$scope', '$sails', 'authFactory', function ($scope, $sails, authFactory) {
+     
+        $scope.center = {
+          lat: -26.505,
+          lon: 28.09,
+          zoom: 1
+        }
+
+        $scope.controls = [
+          { name: 'zoom', active: true },
+          { name: 'rotate', active: true },
+          { name: 'attribution', active: true }
+        ]
+
+        var query = "/map/nodes";
+        $scope.$applyAsync(function() 
+        {
+          // $sails.get(query)
+          // .success(function (data, status, headers, jwr) {
+          //   $scope.markers = data;
+          // })
+          // .error(function (data, status, headers, jwr) {
+          //   // alert('Houston, we got a problem!');
+          // });
+          query = "/map/geojson"
+          $sails.get(query)
+          .success(function (data, status, headers, jwr) {
+            console.log(data);
+            
+            $scope.geojson = data;
+
+          })
+          .error(function (data, status, headers, jwr) {
+            // alert('Houston, we got a problem!');
+          });
+        });
+
+        $sails.on('map',function(data){
+          $scope.$applyAsync(function() 
+          {
+          
+            console.log(data);
+
+          });
+        });        
+
+    }])
+    .directive('gateways', function() {
+      return {
+        scope: {
             gateways: '=data',
-      			setGateway: '=fn'
-    		},
-    			templateUrl: 'scripts/modules/directives/gateways.html'
-  		};
-  	})
-  	.directive('gatewaysettings', function() {
-    		return {
-    			scope: {
-        			gateway: '=data' 
-      		},
-      			templateUrl: 'scripts/modules/directives/gatewaySettings.html'
-    		};
-  	})
-  	.directive('gatewaysummary', function() {
-    		return {
-    			scope: {
+            setGateway: '=fn'
+        },
+          templateUrl: 'scripts/modules/directives/gateways.html'
+      };
+    })
+    .directive('gatewaysettings', function() {
+        return {
+          scope: {
+              gateway: '=data' 
+          },
+            templateUrl: 'scripts/modules/directives/gatewaySettings.html'
+        };
+    })
+    .directive('gatewaysummary', function() {
+        return {
+          scope: {
         			gateway: '=data'
       		},
       			templateUrl: 'scripts/modules/directives/gatewaySummary.html'
