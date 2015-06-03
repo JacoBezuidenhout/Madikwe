@@ -1,0 +1,109 @@
+    <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
+
+    <script src="geojson.js" type="text/javascript"></script>
+
+    <script>
+    var map = L.map('map').setView([-24.7599333, 26.5012348], 14);
+
+    var getNodeStatus = function(node)
+    {
+        return "#00ff00";
+    }
+
+    
+    var p = L.polyline([], {color: 'green',opacity: 1});
+    p.addTo(map);
+
+    io.socket.get("/gps",function(s){
+        console.log(s);
+        for (var i = 0; i < s.length; i++) {
+            s[i] = [s[i].location.lat+(Math.random()*2-1),s[i].location.lon+(Math.random()*2-1)];
+        };
+        p.setLatLngs(s);
+    });
+
+
+    var me = [];
+    io.socket.on("gps",function(s)
+    {
+
+        p.addLatLng([s.data.location.lat+(Math.random()*2-1),s.data.location.lon+(Math.random()*2-1)]);
+        
+        var m = L.marker([s.data.location.lat+(Math.random()*2-1),s.data.location.lon+(Math.random()*2-1)]).addTo(map);
+
+        me.push(m);
+
+        for (var i = 0; i < me.length; i++) {
+            if (me[i].options.opacity > 0)
+                me[i].setOpacity(me[i].options.opacity - 0.1);
+        };
+        if (me.length > 10)
+        {
+            m = me.shift();
+            map.removeLayer(m);
+        }    
+
+    });
+
+
+        L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            id: 'examples.map-20v6611k'
+        }).addTo(map);
+
+        function onEachFeature(feature, layer) {
+            var popupContent = "";
+            if (feature.geometry.type == 'LineString')
+            {
+                popupContent = "<p>Route</p>";
+                if (feature.properties && feature.properties.name) {
+                    popupContent += feature.properties.name;
+                }
+            }
+            if (feature.geometry.type == 'Point')
+            {
+                popupContent = "<p>Point</p>";
+                if (feature.properties && feature.properties.name) {
+                    popupContent += feature.properties.name;
+                }
+            }
+
+            layer.bindPopup(popupContent);
+        }
+
+        var defaultLayer = L.geoJson(defaultLayerData, 
+        {
+
+            style: function (feature) {
+                return feature.properties && feature.properties.style;
+            },
+
+            onEachFeature: onEachFeature,
+
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: getNodeStatus(feature.name),
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+            }
+        }).addTo(map);
+
+
+        // var defaultLayer = L.geoJson(defaultLayerData, {
+
+        //     pointToLayer: function (feature, latlng) {
+        //         return L.marker(latlng, {icon: baseballIcon});
+        //     },
+
+        //     onEachFeature: onEachFeature
+        // }).addTo(map);
+
+    </script>
+

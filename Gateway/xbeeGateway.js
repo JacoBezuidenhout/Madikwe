@@ -62,7 +62,7 @@ var broadcast = function(cmd,val)
 		function(){
 			lat += (Math.random()*2-1);
 			lon += (Math.random()*2-1);
-			socket.emit('gps',{color: "#0000ff", node:['TrackerA','TrackerB','TrackerC','TrackerD'][Math.floor(Math.random()*4)],type:'EdisonTracker',lat:lat,lon:lon})
+			socket.emit('gps',{color: "#0000ff", node:['TrackerA','TrackerB','TrackerC','TrackerD','TrackerE','TrackerF'][Math.floor(Math.random()*4)],type:'EdisonTracker',lat:lat,lon:lon})
 		}, Math.round(Math.random()*3000));
 	});
 

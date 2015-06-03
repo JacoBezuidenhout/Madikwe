@@ -73,7 +73,8 @@ io.on('connection', function (socket)
     )
     .exec(function (err,res){
       // console.log('GPS',res);
-      var c = proj4('EPSG:3857', [msg.lat,msg.lon]);
+      // var c = proj4('EPSG:3857', [msg.lat,msg.lon]);
+      var c = [msg.lat,msg.lon];
       res.geometry.coordinates.push(c);
       res.save();
 

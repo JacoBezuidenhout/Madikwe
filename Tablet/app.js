@@ -20,22 +20,10 @@
 
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
-var d = require('domain').create()
-
-d.on('error', function(err){
-    // handle the error safely
-    console.log(err)
-})
-
-// catch the uncaught errors in this asynchronous or synchronous code block
-d.run(function(){
-    // the asynchronous or synchronous code that we want to catch thrown errors on
-
 process.chdir(__dirname);
 
 // Ensure a "sails" can be located:
 (function() {
-
   var sails;
   try {
     sails = require('sails');
@@ -69,5 +57,3 @@ process.chdir(__dirname);
   // Start server
   sails.lift(rc('sails'));
 })();
-
-})

@@ -1,1 +1,3 @@
-# Madikwe
+# Tablet
+
+a [Sails](http://sailsjs.org) application
