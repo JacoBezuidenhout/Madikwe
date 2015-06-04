@@ -5,6 +5,8 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+setTimeout(function(){
+
 var io = require('socket.io')(5000);
 var proj4 = require('proj4');
 var checksum = require('checksum');
@@ -39,78 +41,19 @@ io.on('connection', function (socket)
     });
   });
 
-  var trackers = {};
-
-  var properties = {
-    "stroke": "#00ff00",
-    "stroke-width": 2,
-    "stroke-opacity": 0.5,
-    "tracker": "A"
-  }
-  var geoLine = {
-    "type": "LineString",
-    "coordinates": []
-  }
-  var geoPoint = {
-    "type": "LineString",
-    "coordinates": []
-  }
+  socket.on('frame', function (msg) 
+  {
+    msg.gateway = 'HillHouse';
+    Packet.create(msg).exec(function (err,node){});
+  });
 
   socket.on('gps', function (msg) 
   {
-    properties.tracker = msg.node;
-    properties.stroke = msg.color;
-    
-    geoLine.coordinates = [];
-
-
-    var myDate = new Date();
-    myDate.setMinutes(myDate.getMinutes() - 10);
-
-    Map.findOrCreate(
-      {serial: msg.node, "geometry.type": "LineString", "updatedAt" : { $gte : myDate }},
-      {serial: msg.node, type: 'Feature', geometry: geoLine, properties: properties, trackerType: msg.type, }
-    )
+    Map.create(msg)
     .exec(function (err,res){
-      // console.log('GPS',res);
-      // var c = proj4('EPSG:3857', [msg.lat,msg.lon]);
-      var c = [msg.lat,msg.lon];
-      res.geometry.coordinates.push(c);
-      res.save();
-
+      Map.publishCreate(res);
     });
-
-    // Map.create({serial: msg.node, type: 'Feature', geometry: geoLine, properties: properties, trackerType: msg.type, }).exec(function (err,res){
-    //   console.log('GPS',res);
-    // });
-
-        
-  
   });
-
-
-// {
-//   "type": "FeatureCollection",
-//   "features": [
-//     {
-//       "type": "Feature",
-//       "properties": {
-//         "marker-color": "#00ff00",
-//         "marker-size": "small",
-//         "marker-symbol": "minefield",
-//         "node": "NodeSerial"
-//       },
-//       "geometry": {
-//         "type": "Point",
-//         "coordinates": [
-//           26.577987670898438,
-//           -24.703484357475112
-//         ]
-//       }
-//     },
-    
-//   ]
-// }
 
   socket.on('data', function (msg) 
   {
@@ -203,6 +146,7 @@ io.on('connection', function (socket)
 
 });
 
+}, 5000);
 module.exports = {
 
 };

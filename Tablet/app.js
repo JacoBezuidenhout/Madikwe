@@ -22,6 +22,14 @@
 // no matter where we actually lift from.
 process.chdir(__dirname);
 
+var d = require('domain').create();
+
+d.on('error', function(err){
+    // handle the error safely
+    console.log(err);
+});
+
+try {
 // Ensure a "sails" can be located:
 (function() {
   var sails;
@@ -57,3 +65,6 @@ process.chdir(__dirname);
   // Start server
   sails.lift(rc('sails'));
 })();
+} catch (e) {
+  console.log(e);
+}

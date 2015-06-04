@@ -12,9 +12,11 @@
 */
 
 var socket;
+
 var util = require('util');
 var SerialPort = require('serialport').SerialPort;
 var xbee_api = require('xbee-api');
+var lzwCompress = require('lzwcompress');
 
 var C = xbee_api.constants;
  
@@ -22,7 +24,7 @@ var xbeeAPI = new xbee_api.XBeeAPI({
   api_mode: 1
 });
  
-var serialport = new SerialPort("COM7", {
+var serialport = new SerialPort("COM11", {
   baudrate: 9600,
   parser: xbeeAPI.rawParser()
 });
@@ -40,6 +42,17 @@ var broadcast = function(cmd,val)
 	));
 }
 
+var sendData = function(data,id)
+{
+	serialport.write(xbeeAPI.buildFrame(
+		{
+		    type: 0x00, // xbee_api.constants.FRAME_TYPE.TX_REQUEST_64  
+		    destination64: id,
+		    data:  JSON.stringify(data)// Can either be string or byte array. 
+		}
+	));
+	console.log('Sending',id,data);
+}
 	
 	console.log('Serial Open');
 	socket = require('socket.io-client')('http://localhost:5000');
@@ -55,15 +68,15 @@ var broadcast = function(cmd,val)
 			setTimeout(broadcast('DB',[]), Math.random(5000));
 		}, 60000);
 
-		var lat = -26;
-		var lon = 28;
+		// var lat = -26;
+		// var lon = 28;
 		
-		setInterval(
-		function(){
-			lat += (Math.random()*2-1);
-			lon += (Math.random()*2-1);
-			socket.emit('gps',{color: "#0000ff", node:['TrackerA','TrackerB','TrackerC','TrackerD','TrackerE','TrackerF'][Math.floor(Math.random()*4)],type:'EdisonTracker',lat:lat,lon:lon})
-		}, Math.round(Math.random()*3000));
+		// setInterval(
+		// function(){
+		// 	lat += (Math.random()*2-1);
+		// 	lon += (Math.random()*2-1);
+		// 	socket.emit('gps',{color: "#0000ff", node:['TrackerA','TrackerB','TrackerC','TrackerD','TrackerE','TrackerF'][Math.floor(Math.random()*4)],type:'EdisonTracker',lat:lat,lon:lon})
+		// }, Math.round(Math.random()*3000));
 	});
 
 	socket.on('settings', function(data){
@@ -72,7 +85,7 @@ var broadcast = function(cmd,val)
 
 	socket.on('cmd', function(data){
 		console.log("CMD",data);		
-		var frame_obj = { // AT Request to be sent To  
+		var frame_obj = {
 		    type: C.FRAME_TYPE.AT_COMMAND,
 		    command: data.cmd,
 		    commandParameter: [],
@@ -91,7 +104,7 @@ var broadcast = function(cmd,val)
 	});
 
 	xbeeAPI.on("frame_object", function(frame) {
-	    console.log(">>", frame);
+	    // console.log(">>", frame);
     	var result = [];
     	switch(frame.type){
     		case 146:
@@ -105,20 +118,21 @@ var broadcast = function(cmd,val)
     			if (typeof frame.digitalSamples.DIO5 !== 'undefined') 	socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO5', value: frame.digitalSamples.DIO5});
     			break;
     		case 151:
-    			console.log(frame.commandData.toJSON().data);
+    			// console.log(frame.commandData.toJSON().data);
     			if (frame.command === 'TP') socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'Temperature', value: frame.commandData.toJSON().data[1]});
     			if (frame.command === 'DB') socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'RSSI', value: frame.commandData.toJSON().data[0]});
     			if (frame.command === 'NI') socket.emit("NI",{node: frame.remote64, type: 'XBee868LP', value: String.fromCharCode.apply(String, frame.commandData.toJSON().data)});
     			break;
         	case 144:
-    			console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));
-    			var gps = JSON.parse(String.fromCharCode.apply(String, frame.data.toJSON().data));
-    			gps.node = frame.remote64;
-    			gps.type = 'Intel Edison Tracker';
-    			socket.emit("gps",gps);
+    			// console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));
+    			var data = JSON.parse(String.fromCharCode.apply(String, frame.data.toJSON().data));
+    			data.tracker = frame.remote64;
+    			socket.emit('gps',data);
+    			sendData({cs:data.cs},data.tracker);
     			break;
     		default:
-    			console.log(frame);
+	    		socket.emit('frame',frame);
+    			// console.log(frame);
     			break;
     	}
 	    // frame.commandData = frame.commandData.toJSON();

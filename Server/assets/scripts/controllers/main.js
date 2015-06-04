@@ -8,24 +8,24 @@
  * Controller of the iotboxApp
  */
 angular.module('iotboxApp')
-  .controller('MainCtrl', ['$scope', '$location', 'authFactory', function ($scope, $location, authFactory) {
+  .controller('MainCtrl', ['$scope', '$sails', '$location', 'authFactory', function ($scope, $sails, $location, authFactory) {
     
-    $scope.user = authFactory.user();
+    $scope.isLoggedIn = false;
 
-   	$scope.login = function()
-   	{
-   		authFactory.login($scope.identifier,$scope.password,function(res){
-   			if (res.email)
-   			{
-   				// alert(res);
-   				$location.url('/dashboard');
-   			}
-   			else
-   			{
-   				alert("error");
-   			}
-   		});
-	}	
-
+    $sails.get("/me",function(data)
+    {
+      console.log('ME',data);
+      $scope.$applyAsync(function() 
+        {
+          if (data.email)
+          {
+            $scope.isLoggedIn = true;
+          }  
+          else
+          {
+            $scope.isLoggedIn = false;
+          }
+        });
+    });
 
   }]);

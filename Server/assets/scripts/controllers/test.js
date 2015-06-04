@@ -1,9 +1,22 @@
 // test.js
 angular.module('iotboxApp')
   .controller('TestCtrl', ['$scope', '$sails', 'authFactory', function ($scope, $sails, authFactory) {
-      authFactory.user(function(me){
-        $scope.user = me;
-        console.log($scope.user);
+      $scope.isLoggedIn = false;
+
+      $sails.get("/me",function(data)
+      {
+        console.log('ME',data);
+        $scope.$applyAsync(function() 
+          {
+            if (data.email)
+            {
+              $scope.isLoggedIn = true;
+            }  
+            else
+            {
+              $scope.isLoggedIn = false;
+            }
+          });
       });
       
       $sails.get("/gateway")

@@ -1,247 +1,176 @@
-<div class="container-fluid" style="height:100%">
+<div class="header">
+  
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/#/">IoT Box</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+         <div ng-show="isLoggedIn" class="navbar-form navbar-right">
+            <a type="button" href="/#/map" class="btn btn-primary">Map</a>
+            <a type="button" href="/#/dashboard" class="btn btn-primary">Dashboard</a>
+            <a type="button" href="/logout" class="btn btn-danger">Logout</a>
+          </div>
+          <form ng-hide="isLoggedIn" class="navbar-form navbar-right" role="form" action="/auth/local" method="post">
+            <div class="form-group">
+              <input type="text" placeholder="Username/Email" ng-model="identifier"  class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="password" placeholder="Password" ng-model="password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+            <a type="button" href="/auth/facebook" class="btn btn-primary">Facebook</a>
+          </form>
 
-<div class="row-fluid" style="height:100%">
-  <div class="col-md-9">
-    <div id="map" class="map" style="width:100%"></div>
-  </div>
-  <div id="legend" class="col-md-3">
-    <h2 class="text-center">Layers</h2>
-    <table id="legendTable" class="table">
-      <tr><td><strong>Layer Name</strong></td><td><strong>Hide</strong></td><td><strong>Show</strong></td><td><strong>Toggle</strong></td></tr>
-    </table>
-  </div>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+
 </div>
 
-</div>
-<script>
-var image = new ol.style.Circle({
-  radius: 1,
-  fill: null,
-  stroke: new ol.style.Stroke({color: 'red', width: 1})
-});
+</br>
+</br>
+    <!-- // <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script> -->
 
-var styles = {
-  'Point': {
-    'TrackerA': [new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 1,
-        fill: null,
-        stroke: new ol.style.Stroke({color: 'blue', width: 1})
-      })
-    })],
-    'TrackerB': [new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 1,
-        fill: null,
-        stroke: new ol.style.Stroke({color: 'blue', width: 1})
-      })
-    })],
-    'TrackerC': [new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 1,
-        fill: null,
-        stroke: new ol.style.Stroke({color: 'blue', width: 1})
-      })
-    })],
-    'TrackerD': [new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 1,
-        fill: null,
-        stroke: new ol.style.Stroke({color: 'blue', width: 1})
-      })
-    })],
-    'TrackerE': [new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 1,
-        fill: null,
-        stroke: new ol.style.Stroke({color: 'blue', width: 1})
-      })
-    })],
-    'TrackerF': [new ol.style.Style({
-      image: new ol.style.Circle({
-        radius: 1,
-        fill: null,
-        stroke: new ol.style.Stroke({color: 'blue', width: 1})
-      })
-    })]
-  },
-  'LineString': {
-    'TrackerA' :  [new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'green',
-        width: 1
-      })
-    })],
-    'TrackerB' :  [new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'red',
-        width: 1
-      })
-    })],
-    'TrackerC' :  [new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'blue',
-        width: 1
-      })
-    })],
-    'TrackerD' :  [new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'aqua',
-        width: 1
-      })
-    })],
-    'TrackerE' :  [new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'aqua',
-        width: 1
-      })
-    })],
-    'TrackerF' :  [new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'orange',
-        width: 1
-      })
-    })]
-  },
-  'MultiLineString': [new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'green',
-      width: 1
-    })
-  })],
-  'MultiPoint': [new ol.style.Style({
-    image: image
-  })],
-  'MultiPolygon': [new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'yellow',
-      width: 1
-    }),
-    fill: new ol.style.Fill({
-      color: 'rgba(255, 255, 0, 0.1)'
-    })
-  })],
-  'Polygon': [new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'blue',
-      lineDash: [4],
-      width: 3
-    }),
-    fill: new ol.style.Fill({
-      color: 'rgba(0, 0, 255, 0.1)'
-    })
-  })],
-  'GeometryCollection': [new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'magenta',
-      width: 2
-    }),
-    fill: new ol.style.Fill({
-      color: 'magenta'
-    }),
-    image: new ol.style.Circle({
-      radius: 10,
-      fill: null,
-      stroke: new ol.style.Stroke({
-        color: 'magenta'
-      })
-    })
-  })],
-  'Circle': [new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'red',
-      width: 2
-    }),
-    fill: new ol.style.Fill({
-      color: 'rgba(255,0,0,0.2)'
-    })
-  })]
-};
+    <div id="map" style="left: 0px; right: 0px; top: 40px; bottom: 0px; position: fixed;"></div>
 
-var styleFunction = function(feature, resolution) {
-  console.log(feature.n);
-  return styles[feature.getGeometry().getType()][feature.n.tracker];
-};
+    <script src="geojson.js" type="text/javascript"></script>
 
-var vectorLayers = {};
+    <script>
+    var trackers = [];
+    var map = L.map('map').setView([-24.7599333, 26.5012348], 4);
 
-var hideLayer = function(id)
-{
-  vectorLayers[id].setVisible(false);
-}
-
-var toggleLayer = function(id)
-{
-  vectorLayers[id].setVisible(!vectorLayers[id].getVisible());
-}
-
-var showLayer = function(id)
-{
-  vectorLayers[id].setVisible(true);
-}
-
-var map = new ol.Map({
-  layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
-    })
-  ],
-  target: 'map',
-  controls: ol.control.defaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
-      collapsible: false
-    })
-  }),
-  view: new ol.View({
-    center: [0, 0],
-    zoom: 2
-  })
-});
-
-io.socket.get('/map/?limit=1', function(s){
-  io.socket.on('map',function(d)
-  {
-    if (d.id == -1)
+    var getNodeStatus = function(node)
     {
-      var geojsonObject = d.data.data;
-
-      if (geojsonObject.features.length)
-      {
-        var tID = geojsonObject.features[0].serial;
-
-        var vectorSource = new ol.source.Vector({
-          features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-        });
-
-        vectorLayers[tID] = new ol.layer.Vector({
-          source: vectorSource,
-          style: styleFunction
-        });
-
-        $( "#legendTable" ).append( "<tr><td>"
-          +tID
-          +"</td><td>"
-          +"<a onclick='hideLayer(\"" + tID + "\")'>" + tID + "</a>"
-          +"</td><td>"
-          +"<a onclick='showLayer(\"" + tID + "\")'>" + tID + "</a>"
-          +"</td><td>"
-          +"<a onclick='toggleLayer(\"" + tID + "\")'>" + tID + "</a>"
-          +"</td></tr>" );
-        map.addLayer(vectorLayers[tID]);
-      }
-      if (d.id == 0)
-      {
-        var feature = new ol.Feature({
-          geometry: new ol.geom.Point(d.data.coord)
-        });
-        vectorLayers[id].getSource().addFeature(feature);
-      }
+        return "#00ff00";
     }
-  });
-  io.socket.get('/map/all', function(s){});
+
+    
+
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mtggroup.mc6d4eca',
+            accessToken: 'pk.eyJ1IjoibXRnZ3JvdXAiLCJhIjoiSW0tSERxRSJ9.Xkl41-i5smXUuGk3o3i4FA'
+        }).addTo(map);
+
+        function onEachFeature(feature, layer) {
+            var popupContent = "";
+            if (feature.geometry.type == 'LineString')
+            {
+                popupContent = "<p>Route</p>";
+                if (feature.properties && feature.properties.name) {
+                    popupContent += feature.properties.name;
+                }
+            }
+            if (feature.geometry.type == 'Point')
+            {
+                popupContent = "<p>Point</p>";
+                if (feature.properties && feature.properties.name) {
+                    popupContent += feature.properties.name;
+                }
+            }
+
+            layer.bindPopup(popupContent);
+        }
+
+        var defaultLayer = L.geoJson(defaultLayerData, 
+        {
+
+            style: function (feature) {
+                return feature.properties && feature.properties.style;
+            },
+
+            onEachFeature: onEachFeature,
+
+            pointToLayer: function (feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: getNodeStatus(feature.name),
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                });
+            }
+        }).addTo(map);
+
+    var p = {};
+
+$(document).ready(function(){
+
+
+    var points = {};
+
+    io.socket.get("/map",function(all){
+        var routes = [];
+
+        all.forEach(function(element, index){
+          console.log(element.lat,element.lat,index);
+
+          if (!p[element.tracker])
+          {
+            points[element.tracker] = [];
+            var color = element.tracker.split('').splice(-6).join('');
+            p[element.tracker] = L.polyline([], {color: '#'+color,opacity: 1});
+            p[element.tracker].addTo(map);
+          }
+          else
+            p[element.tracker].addLatLng([element.lat,element.lon]);
+
+        });
+
+        // console.log(routes);
+        // p = L.polyline(routes, {color: 'green',opacity: 1});
+        // p.addTo(map);
+    });
+
+
+    io.socket.on("map",function(s)
+    {
+        var color = s.data.tracker.split('').splice(-6).join('');
+        console.log(s);
+        if (!p[s.data.tracker])
+        {
+          points[s.data.tracker] = [];
+          p[s.data.tracker] = L.polyline([], {color: '#'+color,opacity: 1});
+          p[s.data.tracker].addTo(map);
+        }
+        
+        p[s.data.tracker].addLatLng([s.data.lat,s.data.lon]);
+        
+        var m = L.marker([s.data.lat,s.data.lon],{color: '#'+color,opacity: 1}).addTo(map);
+        points[s.data.tracker].push(m);
+
+        for (var i = 0; i < points[s.data.tracker].length; i++) {
+            if (points[s.data.tracker][i].options.opacity > 0)
+                points[s.data.tracker][i].setOpacity(points[s.data.tracker][i].options.opacity - 0.1);
+        };
+        if (points[s.data.tracker].length > 10)
+        {
+            m = points[s.data.tracker].shift();
+            map.removeLayer(m);
+            console.log('Removed');
+        }    
+
+    });
+
+        // var defaultLayer = L.geoJson(defaultLayerData, {
+
+        //     pointToLayer: function (feature, latlng) {
+        //         return L.marker(latlng, {icon: baseballIcon});
+        //     },
+
+        //     onEachFeature: onEachFeature
+        // }).addTo(map);
 });
 
+    </script>
 
-
-
-</script>

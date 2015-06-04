@@ -5,8 +5,7 @@ angular
     'ngRoute',
     'ngAnimate',
     'ngSails',
-    'angular-dimple',
-    'openlayers-directive'
+    'angular-dimple'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -31,7 +30,7 @@ angular
       })
       .when('/map', {
         templateUrl: 'scripts/views/map.html',
-        controller: 'MapCtrl'
+        controller: 'MainCtrl'
       })
       .otherwise({
         redirectTo: '/'
