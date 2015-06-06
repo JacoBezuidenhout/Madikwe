@@ -12,6 +12,7 @@ try{
 		// console.log(e);
 	}
 var checksum = require('checksum');
+var settings = require('../../settings');
 var waiting = true;
 var sendingOld = false;
 var util = require('util');
@@ -26,7 +27,7 @@ var xbeeAPI = new xbee_api.XBeeAPI({
 setTimeout(function(){
 	
 	try{
-		var g = new serialgps('COM9',9600);
+		var g = new serialgps(settings.GPSPort,9600);
 	}catch(e){
 		// console.log(e);
 	}
@@ -83,7 +84,7 @@ setTimeout(function(){
 		}
 	});
 
-	var serialport = new SerialPort("COM7", {
+	var serialport = new SerialPort(settings.XBeePort, {
 	  baudrate: 9600,
 	  parser: xbeeAPI.rawParser()
 	});

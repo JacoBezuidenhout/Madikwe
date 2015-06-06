@@ -14,6 +14,8 @@
 var socket;
 
 var util = require('util');
+var settings = require('./settings');
+
 var SerialPort = require('serialport').SerialPort;
 var xbee_api = require('xbee-api');
 var lzwCompress = require('lzwcompress');
@@ -24,7 +26,7 @@ var xbeeAPI = new xbee_api.XBeeAPI({
   api_mode: 1
 });
  
-var serialport = new SerialPort("COM11", {
+var serialport = new SerialPort(settings.XBeePort, {
   baudrate: 9600,
   parser: xbeeAPI.rawParser()
 });
@@ -110,12 +112,36 @@ var sendData = function(data,id)
     		case 146:
     			if (typeof frame.analogSamples.AD1 !== 'undefined')		socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'BatteryA1', value: frame.analogSamples.AD1});
     			if (typeof frame.analogSamples.AD2 !== 'undefined')		socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'ADC2', value: frame.analogSamples.AD2});
-    			if (typeof frame.digitalSamples.DIO0 !== 'undefined') 	socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO0', value: frame.digitalSamples.DIO0});
-    			if (typeof frame.digitalSamples.DIO1 !== 'undefined') 	socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO1', value: frame.digitalSamples.DIO1});
-    			if (typeof frame.digitalSamples.DIO2 !== 'undefined') 	socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO2', value: frame.digitalSamples.DIO2});
-    			if (typeof frame.digitalSamples.DIO3 !== 'undefined') 	socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO3', value: frame.digitalSamples.DIO3});
-    			if (typeof frame.digitalSamples.DIO4 !== 'undefined') 	socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO4', value: frame.digitalSamples.DIO4});
-    			if (typeof frame.digitalSamples.DIO5 !== 'undefined') 	socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO5', value: frame.digitalSamples.DIO5});
+    			if (typeof frame.digitalSamples.DIO0 !== 'undefined') 	
+    			{
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO0', value: frame.digitalSamples.DIO0});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO0', value: frame.digitalSamples.DIO0});
+    			}
+    			if (typeof frame.digitalSamples.DIO1 !== 'undefined') 	
+    			{
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO1', value: frame.digitalSamples.DIO1});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO1', value: frame.digitalSamples.DIO1});
+    			}
+    			if (typeof frame.digitalSamples.DIO2 !== 'undefined') 	
+    			{
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO2', value: frame.digitalSamples.DIO2});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO2', value: frame.digitalSamples.DIO2});
+    			}
+    			if (typeof frame.digitalSamples.DIO3 !== 'undefined') 	
+    			{
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO3', value: frame.digitalSamples.DIO3});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO3', value: frame.digitalSamples.DIO3});
+    			}
+    			if (typeof frame.digitalSamples.DIO4 !== 'undefined') 	
+    			{
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO4', value: frame.digitalSamples.DIO4});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO4', value: frame.digitalSamples.DIO4});
+    			}
+    			if (typeof frame.digitalSamples.DIO5 !== 'undefined') 	
+    			{
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO5', value: frame.digitalSamples.DIO5});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO5', value: frame.digitalSamples.DIO5});
+    			}
     			break;
     		case 151:
     			// console.log(frame.commandData.toJSON().data);

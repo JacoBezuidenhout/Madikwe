@@ -32,6 +32,11 @@ io.on('connection', function (socket)
     // });
   }
 
+  var sendAlert = function(a)
+  {
+    console.log('Alert',a);
+  }
+
   socket.on('NI', function (msg) 
   {
     msg.gateway = 'HillHouse';
@@ -45,6 +50,15 @@ io.on('connection', function (socket)
   {
     msg.gateway = 'HillHouse';
     Packet.create(msg).exec(function (err,node){});
+  });
+
+  socket.on('alert', function (msg) 
+  {
+    Alert.create(msg)
+    .exec(function (err,res){
+      sendAlert(msg);
+      Alert.publishCreate(res);
+    });
   });
 
   socket.on('gps', function (msg) 

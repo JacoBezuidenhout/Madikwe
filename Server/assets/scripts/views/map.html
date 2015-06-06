@@ -44,14 +44,19 @@
 
     <script>
     var trackers = [];
-    var map = L.map('map').setView([-24.7599333, 26.5012348], 4);
+    var eFence = [{id: "", latlon:[-24.781225, 26.507041]},{id: "", latlon:[-24.778829, 26.500782]},{id: "", latlon:[-24.776253, 26.494361]},{id: "", latlon:[-24.773320, 26.487114]},{id: "", latlon:[-24.770664, 26.481137]},{id: "", latlon:[-24.770310, 26.474727]},{id: "", latlon:[-24.770030, 26.468176]},{id: "", latlon:[-24.769673, 26.462910]}];
+    var map = L.map('map').setView([-24.7599333, 26.5012348], 14);
 
     var getNodeStatus = function(node)
     {
         return "#00ff00";
+    }    
+
+    var getFenceNodeStatus = function(node)
+    {
+        return "#FF0000";
     }
 
-    
 
 
         var mapbox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -85,7 +90,7 @@
         {
 
             style: function (feature) {
-                return feature.properties && feature.properties.style;
+                return {color: "#663300", opacity: 1};
             },
 
             onEachFeature: onEachFeature
@@ -112,12 +117,29 @@
                 });
             }
         }).addTo(map);
+    
+        eFenceLayers = [];
+
+        eFence.forEach(function(element, index){
+            eFenceLayers.push(L.circleMarker(element.latlon, {
+                            radius: 8,
+                            fillColor: getFenceNodeStatus(element.id),
+                            color: "#000",
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.8
+                        }).bindPopup("<b>Fence Sensor</b><br>" + element.id + "<br>Everything is fine"));
+        });
+
+        var eFenceLayerGroup = L.layerGroup(eFenceLayers).addTo(map);
+
 
     var p = {};
     var points = {};
     var layers = {
         "Roads" : defaultLayerRoads,
-        "Nodes" : defaultLayerNodes
+        "Nodes" : defaultLayerNodes,
+        "Electric Fence" : eFenceLayerGroup
     };
     var maps = {
         "Background" : mapbox
@@ -126,7 +148,9 @@
 
 $(document).ready(function(){
 
-
+    io.socket.get("/alert",function(all){
+        console.log(all);
+    });
 
     io.socket.get("/map",function(all){
         var routes = [];
