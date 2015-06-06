@@ -54,7 +54,7 @@
     
 
 
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        var mapbox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
             maxZoom: 18,
             id: 'mtggroup.mc6d4eca',
@@ -81,7 +81,18 @@
             layer.bindPopup(popupContent);
         }
 
-        var defaultLayer = L.geoJson(defaultLayerData, 
+        var defaultLayerRoads = L.geoJson(defaultLayerDataRoads, 
+        {
+
+            style: function (feature) {
+                return feature.properties && feature.properties.style;
+            },
+
+            onEachFeature: onEachFeature
+
+        }).addTo(map);
+
+        var defaultLayerNodes = L.geoJson(defaultLayerDataNodes, 
         {
 
             style: function (feature) {
@@ -103,11 +114,19 @@
         }).addTo(map);
 
     var p = {};
+    var points = {};
+    var layers = {
+        "Roads" : defaultLayerRoads,
+        "Nodes" : defaultLayerNodes
+    };
+    var maps = {
+        "Background" : mapbox
+    };
+    var control = L.control.layers(maps,layers).addTo(map);
 
 $(document).ready(function(){
 
 
-    var points = {};
 
     io.socket.get("/map",function(all){
         var routes = [];
@@ -120,7 +139,9 @@ $(document).ready(function(){
             points[element.tracker] = [];
             var color = element.tracker.split('').splice(-6).join('');
             p[element.tracker] = L.polyline([], {color: '#'+color,opacity: 1});
+            p[element.tracker].bindPopup("<b>" + element.tracker + "</b>");
             p[element.tracker].addTo(map);
+            control.addOverlay(p[element.tracker],element.tracker);
           }
           else
             p[element.tracker].addLatLng([element.lat,element.lon]);
@@ -146,7 +167,9 @@ $(document).ready(function(){
         
         p[s.data.tracker].addLatLng([s.data.lat,s.data.lon]);
         
-        var m = L.marker([s.data.lat,s.data.lon],{color: '#'+color,opacity: 1}).addTo(map);
+        var m = L.marker([s.data.lat,s.data.lon],{color: '#'+color,opacity: 1})
+        m.bindPopup("<b>" + s.data.tracker + "</b><br>" + s.data.createdAt);
+        m.addTo(map);
         points[s.data.tracker].push(m);
 
         for (var i = 0; i < points[s.data.tracker].length; i++) {

@@ -206,6 +206,7 @@ angular.module('iotboxApp')
         console.log('datapointsGet',n.serial);
         //_id = serial
         var query = "/datapoint/?node=" + n.serial;
+        l = l || 20;
         if (m != "")
           query += "&module=" +  m;
         query += "&limit=" +  l + "&sort=createdAt%20desc";

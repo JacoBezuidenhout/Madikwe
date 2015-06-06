@@ -39,6 +39,23 @@ var AuthController = {
     res.redirect('/#/login');
   },
 
+  logMeIn: function (req, res) {
+    var params = req.params.all();
+    console.log('LOGIN',params);
+    User.findOne({username:params.identifier, password: params.password}).exec(function createCB(err, u){
+      console.log(u);
+      if (u)
+      {
+        delete u.password;
+        req.session.user = u;
+        req.session.authenticated = true; 
+        res.redirect('/#/dashboard');
+      }
+      else
+        res.redirect('/#/login');
+    });
+  },
+
   /**
    * Log out a user and return them to the homepage
    *

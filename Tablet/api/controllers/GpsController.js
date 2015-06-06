@@ -26,7 +26,7 @@ var xbeeAPI = new xbee_api.XBeeAPI({
 setTimeout(function(){
 	
 	try{
-		var g = new serialgps('COM10',9600);
+		var g = new serialgps('COM9',9600);
 	}catch(e){
 		// console.log(e);
 	}

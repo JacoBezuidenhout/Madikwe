@@ -46,7 +46,283 @@
     // ]
 
 
-var defaultLayerData = {
+var defaultLayerDataNodes = {
+    "type": "FeatureCollection",
+    "features": [
+
+{
+            "type": "Feature",
+            "properties": {
+                "name": "1",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.475766422227025,
+                    -24.768702993169427,
+                    981.864990234375
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "10",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.494268383830786,
+                    -24.751608101651073,
+                    978.740478515625
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "11",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.49677423760295,
+                    -24.771249163895845,
+                    990.035888671875
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "12",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.49517505429685,
+                    -24.747415306046605,
+                    978.5
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "13",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.502172769978642,
+                    -24.75304056890309,
+                    988.593994140625
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "14",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.506936121731997,
+                    -24.772133622318506,
+                    1003.013671875
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "15",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.511333687230945,
+                    -24.781852858141065,
+                    1007.820068359375
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "16",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.50003144517541,
+                    -24.77137204259634
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "2",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.489737629890442,
+                    -24.75747241638601,
+                    973.453369140625
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "3",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.483956379815936,
+                    -24.75371547974646,
+                    971.050048828125
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "4",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.479739025235176,
+                    -24.756205826997757,
+                    968.886962890625
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "5",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.480535389855504,
+                    -24.76246484555304,
+                    980.1826171875
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "6",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.48772438056767,
+                    -24.77082621306181,
+                    988.353759765625
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "7",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.48823508992791,
+                    -24.76558576337993,
+                    989.795654296875
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "9",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.496606767177582,
+                    -24.757890505716205,
+                    977.05810546875
+                ]
+            }
+        },
+        
+{
+            "type": "Feature",
+            "properties": {
+                "name": "Hillhouse",
+                "time": "2015-05-13T21:03:18Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.47560155019164,
+                    -24.783229753375053,
+                    986.43115234375
+                ]
+            }
+        }
+    
+]
+};
+    var defaultLayerDataRoads = {
     "type": "FeatureCollection",
     "features": [
         {
@@ -21472,261 +21748,6 @@ var defaultLayerData = {
                         -24.782979637384415,
                         981.162841796875
                     ]
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "1",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.475766422227025,
-                    -24.768702993169427,
-                    981.864990234375
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "10",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.494268383830786,
-                    -24.751608101651073,
-                    978.740478515625
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "11",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.49677423760295,
-                    -24.771249163895845,
-                    990.035888671875
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "12",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.49517505429685,
-                    -24.747415306046605,
-                    978.5
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "13",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.502172769978642,
-                    -24.75304056890309,
-                    988.593994140625
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "14",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.506936121731997,
-                    -24.772133622318506,
-                    1003.013671875
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "15",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.511333687230945,
-                    -24.781852858141065,
-                    1007.820068359375
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "16",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.50003144517541,
-                    -24.77137204259634
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "2",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.489737629890442,
-                    -24.75747241638601,
-                    973.453369140625
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "3",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.483956379815936,
-                    -24.75371547974646,
-                    971.050048828125
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "4",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.479739025235176,
-                    -24.756205826997757,
-                    968.886962890625
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "5",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.480535389855504,
-                    -24.76246484555304,
-                    980.1826171875
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "6",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.48772438056767,
-                    -24.77082621306181,
-                    988.353759765625
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "7",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.48823508992791,
-                    -24.76558576337993,
-                    989.795654296875
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "9",
-                "time": "2015-05-13T20:46:09Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.496606767177582,
-                    -24.757890505716205,
-                    977.05810546875
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "Hillhouse",
-                "time": "2015-05-13T21:03:18Z",
-                "sym": "Waypoint"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    26.47560155019164,
-                    -24.783229753375053,
-                    986.43115234375
                 ]
             }
         }
