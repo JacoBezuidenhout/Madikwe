@@ -78,15 +78,18 @@ setTimeout(function(){
 			}	
 		    if (settings.mock) location.lat += Math.random()-0.5;	
 		    if (settings.mock) location.lon += Math.random()-0.5;	
-		    Gps.create({GPSData:data,location: location}).exec(function createCB(err, created){
-			  if (settings.debug) console.log(created);
-			  count++;
-			  	if (count > 5)
-			  	{
-			 		Gps.publishCreate(created);
-					count = 0;
-				}
-			});
+		    if (settings.run)
+		    {
+    		    Gps.create({GPSData:data,location: location}).exec(function createCB(err, created){
+    			  if (settings.debug) console.log(created);
+    			  count++;
+    			  	if (count > 5)
+    			  	{
+    			 		Gps.publishCreate(created);
+    					count = 0;
+    				}
+    			});
+		    }
 		}catch(e){
 			console.log(e);
 		}

@@ -10,11 +10,10 @@
         return "#00ff00";
     }
 
-    
     var p = L.polyline([], {color: 'green',opacity: 1});
     p.addTo(map);
 
-    io.socket.get("/gps",function(s){
+    io.socket.get("/gps?limit=20000",function(s){
         console.log(s);
         for (var i = 0; i < s.length; i++) {
             s[i] = [s[i].location.lat,s[i].location.lon];
@@ -26,9 +25,8 @@
     var me = [];
     io.socket.on("gps",function(s)
     {
-
         p.addLatLng([s.data.location.lat,s.data.location.lon]);
-        
+        map.setView([s.data.location.lat,s.data.location.lon]);
         var m = L.marker([s.data.location.lat,s.data.location.lon]).addTo(map);
 
         me.push(m);
@@ -42,66 +40,53 @@
             m = me.shift();
             map.removeLayer(m);
         }    
-
     });
 
+    L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        id: 'examples.map-20v6611k'
+    }).addTo(map);
 
-        L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-            id: 'examples.map-20v6611k'
-        }).addTo(map);
-
-        function onEachFeature(feature, layer) {
-            var popupContent = "";
-            if (feature.geometry.type == 'LineString')
-            {
-                popupContent = "<p>Route</p>";
-                if (feature.properties && feature.properties.name) {
-                    popupContent += feature.properties.name;
-                }
-            }
-            if (feature.geometry.type == 'Point')
-            {
-                popupContent = "<p>Point</p>";
-                if (feature.properties && feature.properties.name) {
-                    popupContent += feature.properties.name;
-                }
-            }
-
-            layer.bindPopup(popupContent);
-        }
-
-        var defaultLayer = L.geoJson(defaultLayerData, 
+    function onEachFeature(feature, layer) {
+        var popupContent = "";
+        if (feature.geometry.type == 'LineString')
         {
-
-            style: {opacity:1},
-
-            onEachFeature: onEachFeature,
-
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: 8,
-                    fillColor: getNodeStatus(feature.name),
-                    color: "#000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
+            popupContent = "<p>Route</p>";
+            if (feature.properties && feature.properties.name) {
+                popupContent += feature.properties.name;
             }
-        }).addTo(map);
+        }
+        if (feature.geometry.type == 'Point')
+        {
+            popupContent = "<p>Point</p>";
+            if (feature.properties && feature.properties.name) {
+                popupContent += feature.properties.name;
+            }
+        }
+        layer.bindPopup(popupContent);
+    }
 
+    var defaultLayer = L.geoJson(defaultLayerData, 
+    {
 
-        // var defaultLayer = L.geoJson(defaultLayerData, {
+        style: {opacity:1},
 
-        //     pointToLayer: function (feature, latlng) {
-        //         return L.marker(latlng, {icon: baseballIcon});
-        //     },
+        onEachFeature: onEachFeature,
 
-        //     onEachFeature: onEachFeature
-        // }).addTo(map);
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+                radius: 8,
+                fillColor: getNodeStatus(feature.name),
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            });
+        }
+    }).addTo(map);
 
     </script>
 

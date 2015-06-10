@@ -1,4 +1,5 @@
 {
+	"run" : false,
 	"tracker" : "TrackerA",
 	"debug" : true,
 	"mock" : false,

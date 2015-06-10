@@ -77,80 +77,81 @@ io.on('connection', function (socket)
 
       // console.log(err,msg,node);
       // console.log(msg.module);
-
-      var flag = false;
-      if (node.modules)
-      {
-        for (var i = 0; i < node.modules.length; i++) {
-          if (node.modules[i] == msg.module)
-            flag = true;
-        };
-      }
+      if (err)
+        console.log('Error',err);
       else
       {
-        node.modules = [];
-      }
-
-
-      node.apiCount = node.apiCount || 0;
-      node.apiCount++;
-      
-      if (!flag)
-        node.modules.push(msg.module);
-
-      node.save();
-
-      Gateway.findOne({serial: 'HillHouse'},function(err,data){
-
-        flag = false;
-        // console.log(data);
-
-        if (data.nodes)
+        var flag = false;
+        if (node.modules)
         {
-          for (var i = 0; i < data.nodes.length; i++) {
-            if (data.nodes[i] == msg.node)
+          for (var i = 0; i < node.modules.length; i++) {
+            if (node.modules[i] == msg.module)
               flag = true;
           };
         }
         else
         {
-          data.nodes = [];
+          node.modules = [];
         }
 
 
-        data.apiCount = data.apiCount || 0;
-        data.apiCount++;
-
-        if (!flag)
-          data.nodes.push(msg.node);
-
-        flag = false;
-        if (data.modules)
-        {
-          for (var i = 0; i < data.modules.length; i++) {
-            if (data.modules[i] == msg.module)
-              flag = true;
-          };
-        }
-        else
-        {
-          data.modules = [];
-        }
-
-        if (!flag)
-          data.modules.push(msg.module);
-
-        data.save();
-
-
-          Datapoint.create(msg).exec(function createCB(err,created){
-            // console.log('Datapoint created',created,cs);
-            Datapoint.publishCreate(created);
-          });
+        node.apiCount = node.apiCount || 0;
+        node.apiCount++;
         
-      });
+        if (!flag)
+          node.modules.push(msg.module);
 
+        node.save();
 
+        Gateway.findOne({serial: 'HillHouse'},function(err,data){
+
+          flag = false;
+          // console.log(data);
+
+          if (data.nodes)
+          {
+            for (var i = 0; i < data.nodes.length; i++) 
+            {
+              if (data.nodes[i] == msg.node)
+                flag = true;
+            }
+          }
+          else
+          {
+            data.nodes = [];
+          }
+
+          data.apiCount = data.apiCount || 0;
+          data.apiCount++;
+
+          if (!flag)
+            data.nodes.push(msg.node);
+
+          flag = false;
+          if (data.modules)
+          {
+            for (var i = 0; i < data.modules.length; i++) {
+              if (data.modules[i] == msg.module)
+                flag = true;
+            };
+          }
+          else
+          {
+            data.modules = [];
+          }
+
+          if (!flag)
+            data.modules.push(msg.module);
+
+          data.save();
+
+            Datapoint.create(msg).exec(function createCB(err,created){
+              // console.log('Datapoint created',created,cs);
+              Datapoint.publishCreate(created);
+            });
+          
+        });
+      }
     });
   });
 
