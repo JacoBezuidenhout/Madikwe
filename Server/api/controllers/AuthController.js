@@ -41,19 +41,25 @@ var AuthController = {
 
   logMeIn: function (req, res) {
     var params = req.params.all();
-    console.log('LOGIN',params);
-    User.findOne({username:params.identifier, password: params.password}).exec(function createCB(err, u){
-      console.log(u);
-      if (u)
-      {
-        delete u.password;
-        req.session.user = u;
-        req.session.authenticated = true; 
-        res.redirect('/#/dashboard');
-      }
-      else
-        res.redirect('/#/login');
-    });
+    if (params.password != '')
+    {
+      console.log('LOGIN',params);
+      User.findOne({username:params.identifier, password: params.password}).exec(function createCB(err, u){
+        console.log(u);
+        if (u)
+        {
+          if (u.password == params.password)
+          {
+            delete u.password;
+            req.session.user = u;
+            req.session.authenticated = true; 
+            res.redirect('/#/dashboard');
+          }
+        }
+        else
+          res.redirect('/#/login');
+      });
+    }
   },
 
   /**

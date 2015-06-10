@@ -15,7 +15,6 @@ var socket;
 
 var util = require('util');
 var settings = require('./settings');
-
 var SerialPort = require('serialport').SerialPort;
 var xbee_api = require('xbee-api');
 var lzwCompress = require('lzwcompress');
@@ -31,10 +30,13 @@ var serialport = new SerialPort(settings.XBeePort, {
   parser: xbeeAPI.rawParser()
 });
 
+if (settings.debug) console.log('Settings Loaded',settings);
+
 serialport.on("open", function() {
 
 var broadcast = function(cmd,val)
 {
+	if (settings.debug) console.log('Broadcasting',cmd,val);
 	serialport.write(xbeeAPI.buildFrame(
 		{
 		    type: C.FRAME_TYPE.REMOTE_AT_COMMAND_REQUEST,
@@ -46,6 +48,7 @@ var broadcast = function(cmd,val)
 
 var sendData = function(data,id)
 {
+	if (settings.debug) console.log('Sending',id,data);
 	serialport.write(xbeeAPI.buildFrame(
 		{
 		    type: 0x00, // xbee_api.constants.FRAME_TYPE.TX_REQUEST_64  
@@ -53,16 +56,15 @@ var sendData = function(data,id)
 		    data:  JSON.stringify(data)// Can either be string or byte array. 
 		}
 	));
-	console.log('Sending',id,data);
 }
 	
-	console.log('Serial Open');
+	if (settings.debug) console.log('Serial Open');
 	socket = require('socket.io-client')('http://localhost:5000');
 
 	console.log("Connecting...");
 
 	socket.on('connect', function(){
-		console.log("Connection Successful");
+		if (settings.debug) console.log("Connection Successful\n\nStarting Intervals");
 		setInterval(
 		function(){
 			setTimeout(broadcast('NI',[]), Math.random(5000));
@@ -86,7 +88,7 @@ var sendData = function(data,id)
 	});
 
 	socket.on('cmd', function(data){
-		console.log("CMD",data);		
+		if (settings.debug) console.log("CMD\n",data);		
 		var frame_obj = {
 		    type: C.FRAME_TYPE.AT_COMMAND,
 		    command: data.cmd,
@@ -97,16 +99,16 @@ var sendData = function(data,id)
 	});
 
 	socket.on('data', function(data){
-		console.log("DATA",data);
+		if (settings.debug) console.log("DATA",data);
 	});
 
 
 	socket.on('disconnect', function(){
-		console.log("Disconnected");
+		if (settings.debug) console.log("Disconnected");
 	});
 
 	xbeeAPI.on("frame_object", function(frame) {
-	    // console.log(">>", frame);
+	    if (settings.debug) console.log("New Frame >>\n", frame);
     	var result = [];
     	switch(frame.type){
     		case 146:
