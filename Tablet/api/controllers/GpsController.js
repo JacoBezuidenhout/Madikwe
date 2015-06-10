@@ -5,14 +5,14 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-var location = {tracker: "TrackerA",lat:0,lon:0,speed:-1,heading:0,altitude:0};
+var settings = require('../../settings');
+var location = {tracker: settings.tracker,lat:0,lon:0,speed:-1,heading:0,altitude:0};
 try{
 	var serialgps = require('serialgps');
 	}catch(e){
 		// console.log(e);
 	}
 var checksum = require('checksum');
-var settings = require('../../settings');
 var waiting = true;
 var sendingOld = false;
 var util = require('util');
@@ -36,42 +36,50 @@ setTimeout(function(){
 	g.on('data', function(data) {
 		try{
 			
-			if (data.sentence == 'RMC')
-		      {
-		        if (data.latPole == "S")
-		          location.lat = -1* (parseInt(data.lat.substring(0, 2)) + parseFloat(data.lat.substring(2))/60);
-		        else
-		          location.lat = parseInt(data.lat.substring(0, 2)) + parseFloat(data.lat.substring(2))/60;
+			if (data.sentence == 'RMC' && data.lat != '' && data.lon != '')
+			{
+				if (data.latPole == "S")
+				  location.lat = -1* (parseInt(data.lat.substring(0, 2)) + parseFloat(data.lat.substring(2))/60);
+				else
+				  location.lat = parseInt(data.lat.substring(0, 2)) + parseFloat(data.lat.substring(2))/60;
 
-		        if (data.latPole == "W")
-		          location.lon = -1* (parseInt(data.lon.substring(0, 3)) + parseFloat(data.lon.substring(3))/60);
-		        else
-		          location.lon = parseInt(data.lon.substring(0, 3)) + parseFloat(data.lon.substring(3))/60;
-		      	location.heading = data.trackTrue;
-		      }
-		      if (data.sentence == 'GGA')
-		      {
-		        if (data.latPole == "S")
-		          location.lat = -1* (parseInt(data.lat.substring(0, 2)) + parseFloat(data.lat.substring(2))/60);
-		        else
-		          location.lat = parseInt(data.lat.substring(0, 2)) + parseFloat(data.lat.substring(2))/60;
+				if (data.latPole == "W")
+				  location.lon = -1* (parseInt(data.lon.substring(0, 3)) + parseFloat(data.lon.substring(3))/60);
+				else
+				  location.lon = parseInt(data.lon.substring(0, 3)) + parseFloat(data.lon.substring(3))/60;
+					location.heading = data.trackTrue;
+			} 
+			else
+			{
+			  	if (data.sentence == 'GGA' && data.lat != '' && data.lon != '')
+			  	{
+				    if (data.latPole == "S")
+				      location.lat = -1* (parseInt(data.lat.substring(0, 2)) + parseFloat(data.lat.substring(2))/60);
+				    else
+				      location.lat = parseInt(data.lat.substring(0, 2)) + parseFloat(data.lat.substring(2))/60;
 
-		        if (data.latPole == "W")
-		          location.lon = -1* (parseInt(data.lon.substring(0, 3)) + parseFloat(data.lon.substring(3))/60);
-		        else
-		          location.lon = parseInt(data.lon.substring(0, 3)) + parseFloat(data.lon.substring(3))/60;
-		      
-		      	location.altitude = data.alt;
-		      }
-		      	if (data.sentence == 'VTG')
-		      	{
-		      			location.speed = data.speedKmph;
-		      			location.heading = data.trackTrue;
-		    	}
-		    location.lat += Math.random()-0.5;	
-		    location.lon += Math.random()-0.5;	
+				    if (data.latPole == "W")
+				      location.lon = -1* (parseInt(data.lon.substring(0, 3)) + parseFloat(data.lon.substring(3))/60);
+				    else
+				      location.lon = parseInt(data.lon.substring(0, 3)) + parseFloat(data.lon.substring(3))/60;
+				  
+				  	location.altitude = data.alt;
+			  	} 
+			  	else
+			  	{
+				  	if (data.sentence == 'VTG')
+				  	{
+				  		location.speed = data.speedKmph;
+				  		location.heading = data.trackTrue;
+					} 
+					else
+						if (settings.debug) console.log(data);
+			  	}
+			}	
+		    if (settings.mock) location.lat += Math.random()-0.5;	
+		    if (settings.mock) location.lon += Math.random()-0.5;	
 		    Gps.create({GPSData:data,location: location}).exec(function createCB(err, created){
-			  // console.log(created);
+			  if (settings.debug) console.log(created);
 			  count++;
 			  	if (count > 5)
 			  	{
@@ -186,6 +194,35 @@ setTimeout(function(){
 	    				handle({node: frame.remote64, type: 'XBee868LP', module: 'RSSI', value: frame.commandData.toJSON().data[0]});
 	    			}
 	    			if (frame.command === 'NI') handle({node: frame.remote64, type: 'XBee868LP', value: String.fromCharCode.apply(String, frame.commandData.toJSON().data)});
+	    			break;
+	        	case 144:
+	    			//console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));
+	    			try{
+	    				var cs = JSON.parse(String.fromCharCode.apply(String, frame.data.toJSON().data));
+	    			}catch(e){
+	    				console.log(e);
+	    			}
+
+	    			Packet.findOne(cs).exec(function createCB(err, p){
+	    				if (p)
+	    				{
+		    				p.ack = true;
+		    				p.save();
+		    				console.log('Packet Saved',p);
+	    					if (!sendingOld)
+	    					{
+	    						sendingOld = true;
+			    				Packet.find({ack:false}).exec(function createCB(err, p){
+
+			    					setTimeout(function(){sendingOld=false}, p.length*1000);
+			    					p.forEach(function(element, index){
+			    						sendOldData(element,index);
+			    					});
+
+			    				});
+	    					}
+	    				}
+	    			});
 	    			break;
 	        	case 145:
 	    			//console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));

@@ -146,13 +146,20 @@ var sendData = function(data,id)
     			}
     			break;
     		case 151:
-    			// console.log(frame.commandData.toJSON().data);
+    			if (settings.debug) console.log(frame.commandData.toJSON().data);
     			if (frame.command === 'TP') socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'Temperature', value: frame.commandData.toJSON().data[1]});
     			if (frame.command === 'DB') socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'RSSI', value: frame.commandData.toJSON().data[0]});
     			if (frame.command === 'NI') socket.emit("NI",{node: frame.remote64, type: 'XBee868LP', value: String.fromCharCode.apply(String, frame.commandData.toJSON().data)});
     			break;
         	case 144:
-    			// console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));
+    			if (settings.debug) console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));
+    			var data = JSON.parse(String.fromCharCode.apply(String, frame.data.toJSON().data));
+    			data.tracker = frame.remote64;
+    			socket.emit('gps',data);
+    			sendData({cs:data.cs},data.tracker);
+    			break;
+        	case 145:
+    			if (settings.debug) console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));
     			var data = JSON.parse(String.fromCharCode.apply(String, frame.data.toJSON().data));
     			data.tracker = frame.remote64;
     			socket.emit('gps',data);
@@ -160,7 +167,7 @@ var sendData = function(data,id)
     			break;
     		default:
 	    		socket.emit('frame',frame);
-    			// console.log(frame);
+    			if (settings.debug) console.log(frame);
     			break;
     	}
 	    // frame.commandData = frame.commandData.toJSON();

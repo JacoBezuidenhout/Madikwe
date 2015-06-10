@@ -1,4 +1,7 @@
 {
+	"tracker" : "TrackerA",
+	"debug" : true,
+	"mock" : false,
 	"GPSPort" : "COM9",
-	"XBeePort" : "COM7"
+	"XBeePort" : "COM13"
 }
