@@ -17,25 +17,24 @@
 			"14" : "cff",
 			"15" : "472",
 			"16" : "d78",
-			"17" : "fe2"
+			"17" : "d6a"
 		},
 	"trackers" : 
 		{
 			"TrackerA" : "0013a20040c70d17",
 			"TrackerB" : "0013a20040c70cfb",
-			"TrackerC" : "",
+			"TrackerC" : "0013a20040c70d75",
 			"TrackerD" : "",
-			"TrackerE" : "",
-			"TrackerF" : ""
+			"TrackerE" : "0013a20040c70d6b"
 		},
 	"fence" : 
 		{
-			"1" : "",
-			"2" : "",
-			"3" : "",
-			"4" : "",
-			"5" : "",
-			"6" : "",
-			"7" : ""
+			"Fence1" : "0013a20040d4d2b1",
+			"Fence2" : "0013a20040e8011e",
+			"Fence3" : "0013a20040d4d296",
+			"Fence4" : "",
+			"Fence5" : "",
+			"Fence6" : "",
+			"Fence7" : ""
 		}
 }
