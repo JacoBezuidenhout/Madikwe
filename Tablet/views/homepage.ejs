@@ -1,11 +1,37 @@
     <div id="map" style="width: 100%; height: 100%; position: absolute;"></div>
     <img id="noLock" style="position: fixed; width:20%; height:30%; left:40%; top:30%" src="images/noLock.png" />
+    <img id="logo" style="position: fixed; width:100%; height:100%; left:0px; top:0px" src="images/logo.png" />
     <script src="geojson.js" type="text/javascript"></script>
 
     <script>
     
+    var saveJSON = function(data, filename){
+
+        if(!data) {
+            console.error('Console.save: No data')
+            return;
+        }
+
+        if(!filename) filename = 'console.json'
+
+        if(typeof data === "object"){
+            data = JSON.stringify(data, undefined, 4)
+        }
+
+        var blob = new Blob([data], {type: 'text/json'}),
+            e    = document.createEvent('MouseEvents'),
+            a    = document.createElement('a')
+
+        a.download = filename
+        a.href = window.URL.createObjectURL(blob)
+        a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
+        e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+        a.dispatchEvent(e)
+    }
+
     $(document).ready(function(){
         $("#noLock").hide();
+        setTimeout(function(){$("#logo").hide(1000);}, 2000);
     });
 
     var eFence = [{id: "", latlon:[-24.781225, 26.507041]},{id: "", latlon:[-24.778829, 26.500782]},{id: "", latlon:[-24.776253, 26.494361]},{id: "", latlon:[-24.773320, 26.487114]},{id: "", latlon:[-24.770664, 26.481137]},{id: "", latlon:[-24.770310, 26.474727]},{id: "", latlon:[-24.770030, 26.468176]},{id: "", latlon:[-24.769673, 26.462910]}];
@@ -44,7 +70,7 @@
 
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, {
-                radius: 8,
+                radius: 15,
                 fillColor: getNodeStatus(feature.name),
                 color: "#000",
                 weight: 1,
@@ -58,6 +84,19 @@
     var getFenceNodeStatus = function(node)
     {
         return "#FF0000";
+    }
+    var getColorFromRSSI = function(rssi)
+    {
+        if (rssi>100)
+            return "#FF0000";
+        else if (rssi>80)
+            return "#FFFF00";
+        else if (rssi>60)
+            return "#0000FF";
+        else if (rssi>40)
+            return "#00FF00";
+        else
+            return "#00FFFF";
     }
 
     eFenceLayers = [];
@@ -78,19 +117,48 @@
     var p = L.polyline([], {color: 'green',opacity: 1});
     p.addTo(map);
 
-    io.socket.get("/gps?limit=500&sort=id%20desc",function(s){
-        console.log(s);
-        for (var i = 0; i < s.length; i++) {
-            s[i] = [s[i].location.lat,s[i].location.lon];
-        };
-        p.setLatLngs(s);
+    eDataLayers = [];
+    results = [];
+                
+    testData2.forEach(function(element, index){
+
+        eDataLayers.push(L.circleMarker(element.latlon, {
+            radius: 5,
+            fillColor: getColorFromRSSI(element.rssi), 
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).bindPopup("<b>" + element.rssi + "</b>"));
     });
+        var eDataLayersGroup = L.layerGroup(eDataLayers).addTo(map);
+
+    // io.socket.get("/gps?limit=4000&sort=id%20desc",function(s){
+    //     console.log(s);
+
+    //     for (var i = 0; i < s.length; i++) {
+    //         results.push({latlon:[s[i].location.lat,s[i].location.lon],rssi:testData[i%4500].value});
+    //         eDataLayers.push(L.circleMarker([s[i].location.lat,s[i].location.lon], {
+    //                     radius: 5,
+    //                     fillColor: getColorFromRSSI(testData[i%4500].value+2), 
+    //                     color: "#000",
+    //                     weight: 1,
+    //                     opacity: 1,
+    //                     fillOpacity: 0.8
+    //                 }).bindPopup("<b>" + testData[i%4500].value + "</b>"));
+
+    //         s[i] = [s[i].location.lat,s[i].location.lon];
+    //     };
+    //     p.setLatLngs(s);
+    //     saveJSON(results,"2.json");
+    //     console.log(eDataLayersGroup.toGeoJSON());
+    // });
 
 
     var me = [];
     io.socket.on("gps",function(s)
     {
-        if (s.id == 0)
+        if (s.id == 1)
         {   
             $("#noLock").show(1000);
         }

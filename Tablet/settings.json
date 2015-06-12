@@ -3,6 +3,6 @@
 	"tracker" : "TrackerE",
 	"debug" : true,
 	"mock" : false,
-	"GPSPort" : "COM10",
-	"XBeePort" : "COM7"
+	"GPSPort" : "COM7",
+	"XBeePort" : "COM18"
 }
