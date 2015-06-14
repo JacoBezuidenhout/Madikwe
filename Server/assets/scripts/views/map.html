@@ -43,6 +43,8 @@
     <script src="geojson.js" type="text/javascript"></script>
 
     <script>
+$(document).ready(function(){
+
     var trackers = [];
     var eFence = [{id: "", latlon:[-24.781225, 26.507041]},{id: "", latlon:[-24.778829, 26.500782]},{id: "", latlon:[-24.776253, 26.494361]},{id: "", latlon:[-24.773320, 26.487114]},{id: "", latlon:[-24.770664, 26.481137]},{id: "", latlon:[-24.770310, 26.474727]},{id: "", latlon:[-24.770030, 26.468176]},{id: "", latlon:[-24.769673, 26.462910]}];
     var map = L.map('map').setView([-24.7599333, 26.5012348], 14);
@@ -75,8 +77,6 @@
     {
         return "#FF0000";
     }
-
-
 
         var mapbox = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -166,73 +166,75 @@
                 "Background" : mapbox
             };
             var control = L.control.layers(maps,layers).addTo(map);
-        });
     
-    var p = {};
-    var points = {};
-
-$(document).ready(function(){
-
-    io.socket.get("/alert",function(all){
-        console.log(all);
-    });
-
-    io.socket.get("/map",function(all){
-        var routes = [];
-
-        all.forEach(function(element, index){
-          console.log(element.lat,element.lat,index);
-
-          if (!p[element.tracker])
-          {
-            points[element.tracker] = [];
-            var color = element.tracker.split('').splice(-6).join('');
-            p[element.tracker] = L.polyline([], {color: '#'+color,opacity: 1});
-            p[element.tracker].bindPopup("<b>" + element.tracker + "</b>");
-            p[element.tracker].addTo(map);
-            control.addOverlay(p[element.tracker],element.tracker);
-          }
-          else
-            p[element.tracker].addLatLng([element.lat,element.lon]);
-
-        });
-
-        // console.log(routes);
-        // p = L.polyline(routes, {color: 'green',opacity: 1});
-        // p.addTo(map);
-    });
+            var p = {};
+            var points = {};
 
 
-    io.socket.on("map",function(s)
-    {
-        var color = s.data.tracker.split('').splice(-6).join('');
-        console.log(s);
-        if (!p[s.data.tracker])
-        {
-          points[s.data.tracker] = [];
-          p[s.data.tracker] = L.polyline([], {color: '#'+color,opacity: 1});
-          p[s.data.tracker].addTo(map);
-        }
-        
-        p[s.data.tracker].addLatLng([s.data.lat,s.data.lon]);
-        
-        var m = L.marker([s.data.lat,s.data.lon],{color: '#'+color,opacity: 1})
-        m.bindPopup("<b>" + s.data.tracker + "</b><br>" + s.data.createdAt);
-        m.addTo(map);
-        points[s.data.tracker].push(m);
+            io.socket.get("/alert",function(all){
+                console.log(all);
+            });
 
-        for (var i = 0; i < points[s.data.tracker].length; i++) {
-            if (points[s.data.tracker][i].options.opacity > 0)
-                points[s.data.tracker][i].setOpacity(points[s.data.tracker][i].options.opacity - 0.1);
-        };
-        if (points[s.data.tracker].length > 10)
-        {
-            m = points[s.data.tracker].shift();
-            map.removeLayer(m);
-            console.log('Removed');
-        }    
+            io.socket.on("alert",function(alert){
+                console.log(alert);
+            });
 
-    });
+            io.socket.get("/map",function(all){
+                var routes = [];
+
+                all.forEach(function(element, index){
+                  console.log(element.lat,element.lat,index);
+
+                  if (!p[element.tracker])
+                  {
+                    points[element.tracker] = [];
+                    var color = element.tracker.split('').splice(-6).join('');
+                    p[element.tracker] = L.polyline([], {color: '#'+color,opacity: 1});
+                    p[element.tracker].bindPopup("<b>" + element.tracker + "</b>");
+                    p[element.tracker].addTo(map);
+                    control.addOverlay(p[element.tracker],element.tracker);
+                  }
+                  else
+                    p[element.tracker].addLatLng([element.lat,element.lon]);
+
+                });
+
+                // console.log(routes);
+                // p = L.polyline(routes, {color: 'green',opacity: 1});
+                // p.addTo(map);
+            });
+
+
+            io.socket.on("map",function(s)
+            {
+                var color = s.data.tracker.split('').splice(-6).join('');
+                console.log(s);
+                if (!p[s.data.tracker])
+                {
+                  points[s.data.tracker] = [];
+                  p[s.data.tracker] = L.polyline([], {color: '#'+color,opacity: 1});
+                  p[s.data.tracker].addTo(map);
+                }
+                
+                p[s.data.tracker].addLatLng([s.data.lat,s.data.lon]);
+                
+                var m = L.marker([s.data.lat,s.data.lon],{color: '#'+color,opacity: 1})
+                m.bindPopup("<b>" + s.data.tracker + "</b><br>" + s.data.createdAt);
+                m.addTo(map);
+                points[s.data.tracker].push(m);
+
+                for (var i = 0; i < points[s.data.tracker].length; i++) {
+                    if (points[s.data.tracker][i].options.opacity > 0)
+                        points[s.data.tracker][i].setOpacity(points[s.data.tracker][i].options.opacity - 0.1);
+                };
+                if (points[s.data.tracker].length > 10)
+                {
+                    m = points[s.data.tracker].shift();
+                    map.removeLayer(m);
+                    console.log('Removed');
+                }    
+
+            });
 
         // var defaultLayer = L.geoJson(defaultLayerData, {
 
@@ -242,6 +244,7 @@ $(document).ready(function(){
 
         //     onEachFeature: onEachFeature
         // }).addTo(map);
+        });
 });
 
     </script>

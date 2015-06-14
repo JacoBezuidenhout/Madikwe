@@ -116,35 +116,48 @@ var sendData = function(data,id)
     		case 146:
     			if (typeof frame.analogSamples.AD1 !== 'undefined')		socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'BatteryA1', value: frame.analogSamples.AD1});
     			if (typeof frame.analogSamples.AD2 !== 'undefined')		socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'ADC2', value: frame.analogSamples.AD2});
+    			//comm button
     			if (typeof frame.digitalSamples.DIO0 !== 'undefined') 	
     			{
-    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO0', value: frame.digitalSamples.DIO0});
-    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO0', value: frame.digitalSamples.DIO0});
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'BTN0', value: frame.digitalSamples.DIO0});
+    				// socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'BTN0', value: frame.digitalSamples.DIO0});
     			}
+    			//ADC1
     			if (typeof frame.digitalSamples.DIO1 !== 'undefined') 	
     			{
-    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO1', value: frame.digitalSamples.DIO1});
-    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO1', value: frame.digitalSamples.DIO1});
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'BTN1', value: frame.digitalSamples.DIO1});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'BTN1', value: frame.digitalSamples.DIO1});
     			}
     			if (typeof frame.digitalSamples.DIO2 !== 'undefined') 	
     			{
-    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO2', value: frame.digitalSamples.DIO2});
-    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO2', value: frame.digitalSamples.DIO2});
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'LINE1', value: frame.digitalSamples.DIO2});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'LINE1', value: frame.digitalSamples.DIO2});
     			}
     			if (typeof frame.digitalSamples.DIO3 !== 'undefined') 	
     			{
-    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO3', value: frame.digitalSamples.DIO3});
-    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO3', value: frame.digitalSamples.DIO3});
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'LINE2', value: frame.digitalSamples.DIO3});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'LINE2', value: frame.digitalSamples.DIO3});
     			}
     			if (typeof frame.digitalSamples.DIO4 !== 'undefined') 	
     			{
-    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO4', value: frame.digitalSamples.DIO4});
-    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO4', value: frame.digitalSamples.DIO4});
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'LINE3', value: frame.digitalSamples.DIO4});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'LINE3', value: frame.digitalSamples.DIO4});
     			}
+    			//accoc led
     			if (typeof frame.digitalSamples.DIO5 !== 'undefined') 	
     			{
-    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'DIO5', value: frame.digitalSamples.DIO5});
-    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'DIO5', value: frame.digitalSamples.DIO5});
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'BTN2', value: frame.digitalSamples.DIO5});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'BTN2', value: frame.digitalSamples.DIO5});
+    			}
+    			if (typeof frame.digitalSamples.DIO6 !== 'undefined') 	
+    			{
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'LINE4', value: frame.digitalSamples.DIO6});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'LINE4', value: frame.digitalSamples.DIO6});
+    			}
+    			if (typeof frame.digitalSamples.DIO7 !== 'undefined') 	
+    			{
+    				socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'LINE5', value: frame.digitalSamples.DIO7});
+    				socket.emit("alert",{node: frame.remote64, type: 'XBee868LP', module: 'LINE5', value: frame.digitalSamples.DIO7});
     			}
     			break;
     		case 151:
