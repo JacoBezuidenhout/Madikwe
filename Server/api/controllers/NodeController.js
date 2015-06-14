@@ -5,7 +5,22 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+var mappings = require("../../../mappings.json");
+
+console.log('mappings',mappings);
+
 module.exports = {
+	status : function(req,res)
+	{
+		var params = req.params.all();
+		console.log(params);
+
+		var s = mappings.nodes[params.N];
+		Node.findOne({serial: s},function(err,docs){
+			res.json(docs);
+		});
+	},
+
 	byGateway : function(req,res)
 	{
 		var params = req.params.all();

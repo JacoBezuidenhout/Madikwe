@@ -18,17 +18,23 @@
 			      <h3 class="panel-title">Datapoint Count</h3>
 			   </div>
 			   <div class="panel-body">
-			      Count: {{datapointCount(node)}}
+			      Count: {{node.apiCount}}
 			   </div>
 			</div>
 		</div>
 		<div class="col-md-12">
-			<div class="panel panel-info">
+			<div class="panel panel-{{nodeStatus(node)}}">
 			   <div class="panel-heading">
 			      <h3 class="panel-title">Status</h3>
 			   </div>
-			   <div class="panel-body">
-			      Status: {{nodeStatus(node)}}
+			   <div ng-show="nodeStatus(node) == 'danger'" class="panel-body">
+			      Last data less than a day ago
+			   </div>
+			   <div ng-show="nodeStatus(node) == 'warning'" class="panel-body">
+			      Last data less than 2 hours ago
+			   </div>
+			   <div ng-show="nodeStatus(node) == 'success'" class="panel-body">
+			      Everything is good! 
 			   </div>
 			</div>
 		</div>
@@ -38,7 +44,7 @@
 			      <h3 class="panel-title">Last Update</h3>
 			   </div>
 			   <div class="panel-body">
-			      Last: {{node.last}}
+			      Last: {{node.updatedAt}}
 			   </div>
 			</div>
 		</div>

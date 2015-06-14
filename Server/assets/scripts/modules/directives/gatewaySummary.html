@@ -18,7 +18,7 @@
 			      <h3 class="panel-title">Module Count</h3>
 			   </div>
 			   <div class="panel-body">
-			      Count: {{moduleCount(gateway)}}
+			      Count: {{gateway.modules.length}}
 			   </div>
 			</div>
 		</div>
@@ -28,7 +28,7 @@
 			      <h3 class="panel-title">API Calls</h3>
 			   </div>
 			   <div class="panel-body">
-			      Count: {{apiCount(gateway)}}
+			      Count: {{gateway.apiCount}}
 			   </div>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 			      <h3 class="panel-title">Last Update</h3>
 			   </div>
 			   <div class="panel-body">
-			      Last: {{gateway.last}}
+			      Last: {{gateway.updatedAt}}
 			   </div>
 			</div>
 		</div>

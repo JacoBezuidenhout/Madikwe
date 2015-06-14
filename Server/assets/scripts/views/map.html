@@ -47,9 +47,25 @@
     var eFence = [{id: "", latlon:[-24.781225, 26.507041]},{id: "", latlon:[-24.778829, 26.500782]},{id: "", latlon:[-24.776253, 26.494361]},{id: "", latlon:[-24.773320, 26.487114]},{id: "", latlon:[-24.770664, 26.481137]},{id: "", latlon:[-24.770310, 26.474727]},{id: "", latlon:[-24.770030, 26.468176]},{id: "", latlon:[-24.769673, 26.462910]}];
     var map = L.map('map').setView([-24.7599333, 26.5012348], 14);
 
-    var getNodeStatus = function(node)
+    var getNodeStatus = function(node,nodes)
     {
-        return "#00ff00";
+        //return "#00ff00";
+        for (var i = 0; i < nodes.length; i++) {
+            if (node = nodes[i].NI)
+            {
+                var dateNow = new Date();
+                var warn = new Date().setHours(dateNow.getHours() - 2);
+                var danger = new Date().setHours(dateNow.getHours() - 24);
+                var nodeDate = new Date(nodes[i].updatedAt);
+                if (nodeDate > warn)
+                  return '#00ff00';
+                else if (nodeDate < warn && nodeDate > danger) 
+                  return '#ffff00';
+                else if (nodeDate < danger)
+                  return '#ff0000'; 
+            }
+        };
+        return '#ffffff'
     }    
 
     var getFenceNodeStatus = function(node)
@@ -97,54 +113,60 @@
 
         }).addTo(map);
 
-        var defaultLayerNodes = L.geoJson(defaultLayerDataNodes, 
-        {
+        var defaultLayerNodes;
+        io.socket.get("/node",function(nodes){
+            defaultLayerNodes = L.geoJson(defaultLayerDataNodes, 
+            {
 
-            style: function (feature) {
-                return feature.properties && feature.properties.style;
-            },
+                style: function (feature) {
+                    return feature.properties && feature.properties.style;
+                },
 
-            onEachFeature: onEachFeature,
+                onEachFeature: onEachFeature,
 
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {
-                    radius: 8,
-                    fillColor: getNodeStatus(feature.name),
-                    color: "#000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
-            }
-        }).addTo(map);
-    
-        eFenceLayers = [];
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, {
+                        radius: 8,
+                        fillColor: getNodeStatus(feature.name,nodes),
+                        color: "#000",
+                        weight: 1,
+                        opacity: 1,
+                        fillOpacity: 0.8
+                    });
+                }
+            }).addTo(map);
 
-        eFence.forEach(function(element, index){
-            eFenceLayers.push(L.circleMarker(element.latlon, {
-                            radius: 8,
-                            fillColor: getFenceNodeStatus(element.id),
-                            color: "#000",
-                            weight: 1,
-                            opacity: 1,
-                            fillOpacity: 0.8
-                        }).bindPopup("<b>Fence Sensor</b><br>" + element.id + "<br>Everything is fine"));
+            console.log(nodes);
+            eFenceLayers = [];
+
+            eFence.forEach(function(element, index){
+
+                eFenceLayers.push(L.circleMarker(element.latlon, {
+                                radius: 8,
+                                fillColor: getFenceNodeStatus(element.id),
+                                color: "#000",
+                                weight: 1,
+                                opacity: 1,
+                                fillOpacity: 0.8
+                            }).bindPopup("<b>Fence Sensor</b><br>" + element.id + "<br>Everything is fine"));
+            
+            });
+
+            var eFenceLayerGroup = L.layerGroup(eFenceLayers).addTo(map);
+            
+            var layers = {
+                "Roads" : defaultLayerRoads,
+                "Nodes" : defaultLayerNodes,
+                "Electric Fence" : eFenceLayerGroup
+            };
+            var maps = {
+                "Background" : mapbox
+            };
+            var control = L.control.layers(maps,layers).addTo(map);
         });
-
-        var eFenceLayerGroup = L.layerGroup(eFenceLayers).addTo(map);
-
-
+    
     var p = {};
     var points = {};
-    var layers = {
-        "Roads" : defaultLayerRoads,
-        "Nodes" : defaultLayerNodes,
-        "Electric Fence" : eFenceLayerGroup
-    };
-    var maps = {
-        "Background" : mapbox
-    };
-    var control = L.control.layers(maps,layers).addTo(map);
 
 $(document).ready(function(){
 

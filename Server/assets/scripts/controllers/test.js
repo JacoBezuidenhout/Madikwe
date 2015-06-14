@@ -196,6 +196,23 @@ angular.module('iotboxApp')
         console.log('nodeSave',$scope.node);
       };
 
+      $scope.nodeStatus = function(node)
+      {
+        if (node)
+        {
+          var dateNow = new Date();
+          var warn = new Date().setHours(dateNow.getHours() - 2);
+          var danger = new Date().setHours(dateNow.getHours() - 24);
+          var nodeDate = new Date(node.updatedAt);
+          if (nodeDate > warn)
+            return 'success';
+          else if (nodeDate < warn && nodeDate > danger) 
+            return 'warning';
+          else if (nodeDate < danger)
+            return 'danger'; 
+        }
+      }
+
       $scope.nodeReset = function()
       {
         console.log('nodeReset');
@@ -329,7 +346,8 @@ angular.module('iotboxApp')
     .directive('nodesummary', function() {
         return {
           scope: {
-              node: '=data'
+              node: '=data',
+              nodeStatus: '=fn',
           },
             templateUrl: 'scripts/modules/directives/nodeSummary.html'
         };
