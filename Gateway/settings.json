@@ -1,5 +1,5 @@
 {
 	"server" : "192.168.10.150:5000",
 	"debug" : true,
-	"XBeePort" : "COM7"
+	"XBeePort" : "/dev/ttyUSB0"
 }
