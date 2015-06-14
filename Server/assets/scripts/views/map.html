@@ -54,9 +54,12 @@
             if (node = nodes[i].NI)
             {
                 var dateNow = new Date();
-                var warn = new Date().setHours(dateNow.getHours() - 2);
-                var danger = new Date().setHours(dateNow.getHours() - 24);
+                var warn = new Date(dateNow);
+                warn.setHours(warn.getHours() - 4);
+                var danger = new Date(dateNow);
+                danger.setHours(danger.getHours() - 24);
                 var nodeDate = new Date(nodes[i].updatedAt);
+                console.log('Dates',dateNow,nodeDate,warn,danger);
                 if (nodeDate > warn)
                   return '#00ff00';
                 else if (nodeDate < warn && nodeDate > danger) 
