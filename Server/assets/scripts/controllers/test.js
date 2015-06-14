@@ -40,7 +40,7 @@ angular.module('iotboxApp')
           $sails.get("/gateway/" + g.id)
           .success(function (data, status, headers, jwr) {
             $scope.nodes = data.nodes;
-            $scope.gateway = data;
+            $scope.gateway = data; 
             console.log("got nodes",data);
           })
           .error(function (data, status, headers, jwr) {

@@ -70,7 +70,7 @@ var sendData = function(data,id)
 			setTimeout(broadcast('NI',[]), Math.random(5000));
 			setTimeout(broadcast('TP',[]), Math.random(5000));
 			setTimeout(broadcast('DB',[]), Math.random(5000));
-		}, 60000);
+		}, 20000);
 
 		// var lat = -26;
 		// var lon = 28;
@@ -110,6 +110,8 @@ var sendData = function(data,id)
 	xbeeAPI.on("frame_object", function(frame) {
 	    if (settings.debug) console.log("New Frame >>\n", frame);
     	var result = [];
+	try {
+
     	switch(frame.type){
     		case 146:
     			if (typeof frame.analogSamples.AD1 !== 'undefined')		socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'BatteryA1', value: frame.analogSamples.AD1});
@@ -146,10 +148,10 @@ var sendData = function(data,id)
     			}
     			break;
     		case 151:
-    			if (settings.debug) console.log(frame.commandData.toJSON().data);
-    			if (frame.command === 'TP') socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'Temperature', value: frame.commandData.toJSON().data[1]});
-    			if (frame.command === 'DB') socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'RSSI', value: frame.commandData.toJSON().data[0]});
-    			if (frame.command === 'NI') socket.emit("NI",{node: frame.remote64, type: 'XBee868LP', value: String.fromCharCode.apply(String, frame.commandData.toJSON().data)});
+    			if (settings.debug) console.log(frame.commandData.toJSON());
+    			if (frame.command === 'TP') socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'Temperature', value: frame.commandData.toJSON()[1]});
+    			if (frame.command === 'DB') socket.emit("data",{node: frame.remote64, type: 'XBee868LP', module: 'RSSI', value: frame.commandData.toJSON()[0]});
+    			if (frame.command === 'NI') socket.emit("NI",{node: frame.remote64, type: 'XBee868LP', value: String.fromCharCode.apply(String, frame.commandData.toJSON())});
     			break;
         	case 144:
     			if (settings.debug) console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));
@@ -170,6 +172,11 @@ var sendData = function(data,id)
     			if (settings.debug) console.log(frame);
     			break;
     	}
+	}
+catch (e)
+{
+console.log(e);
+}
 	    // frame.commandData = frame.commandData.toJSON();
 
 		

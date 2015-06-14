@@ -1,3 +1,5 @@
+
+
 <div class="header">
   
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -51,9 +53,9 @@
 					<li role="presentation">
 						<a href="" data-target="#nodes" aria-controls="nodes" role="tab" data-toggle="tab">Nodes <span class="badge">{{nodes.length}}</span></a>
 					</li>
-					<li role="presentation">
-						<a href="" data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Map</a>
-					</li>
+		<!-- 			<li role="presentation disabled">
+						<a disabled href="" data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab">Map</a>
+					</li> -->
 				</ul>
 				<!-- Tab panes -->
 				<div class="tab-content">
@@ -76,11 +78,11 @@
 <nodeDetails data="node"></nodeDetails>
 <div class="col-md-7 well" style="height: 600px;">
 	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="active"><a href="" data-target="#nodeSummary" aria-controls="nodeSummary" role="tab" data-toggle="tab">Node Summary</a></li>
+		<li role="presentation" class="active"><a href="" id="nodeSummaryTab" data-target="#nodeSummary" aria-controls="nodeSummary" role="tab" data-toggle="tab">Node Summary</a></li>
 		<li role="presentation"><a href="" ng-click="datapointsGet(node,'',20)" data-target="#datapoints" aria-controls="datapoints" role="tab" data-toggle="tab">Datapoints</a></li>
 		<li role="presentation"><a href="" ng-click="datapointsGet(node,'',20)" data-target="#graph" aria-controls="graph" role="tab" data-toggle="tab">Graphs</a></li>
-		<li role="presentation"><a href="" data-target="#actuators" aria-controls="actuators" role="tab" data-toggle="tab">Actuators</a></li>
-		<li role="presentation"><a href="" data-target="#nodeSettings" aria-controls="nodeSettings" role="tab" data-toggle="tab">Node Settings</a></li>
+		<!-- <li role="presentation disabled"><a href=""  data-target="#actuators" aria-controls="actuators" role="tab" data-toggle="tab">Actuators</a></li>
+		<li role="presentation disabled"><a href=""  data-target="#nodeSettings" aria-controls="nodeSettings" role="tab" data-toggle="tab">Node Settings</a></li> -->
 	</ul>
 	<!-- Tab panes -->
 	<div class="tab-content">

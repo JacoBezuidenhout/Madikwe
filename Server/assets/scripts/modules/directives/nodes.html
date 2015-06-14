@@ -16,8 +16,8 @@
 	<br/>
 	<div class="row-fluid" style="height: 150px; overflow-y:scroll;">
 		<div class="col-md-4 panel panel-info" ng-repeat="n in nodes | filter:nodeSearch">
-			<a href="" ng-click="nodeSet(n)">
-				<div class="row">
+			<a class="nodeItem" href="" ng-click="nodeSet(n)">
+				<div class="row"> 
 					<div class="col-md-12">
 					    <h4>#{{n.serial}}</h4>
 					    <p>{{n.type}} | {{n.NI || 'None'}}</p>
@@ -31,3 +31,13 @@
 			</a>	
 		</div>
 	</div>
+<script type="text/javascript">
+	
+
+$(".nodeItem").click(function(){
+	alert( "Handler for .click() called." );
+	$("#nodeSummaryTab").tab('show');
+});
+
+
+</script>
