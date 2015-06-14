@@ -117,7 +117,7 @@
         }).addTo(map);
 
         var defaultLayerNodes;
-        io.socket.get("/node",function(nodes){
+        io.socket.get("/node?limit=1000",function(nodes){
             defaultLayerNodes = L.geoJson(defaultLayerDataNodes, 
             {
 
