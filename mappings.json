@@ -25,8 +25,8 @@
 		{
 			"TrackerA" : "0013a20040c70d17",
 			"TrackerB" : "0013a20040c70cfb",
-			"TrackerC" : "0013a20040c70d75",
-			"TrackerD" : "",
+			"TrackerC" : "0013a20040c70d68",
+			"TrackerD" : "0013a20040c70cf1",
 			"TrackerE" : "0013a20040c70d6b"
 		},
 	"fence" : 
@@ -36,7 +36,7 @@
 			"Fence3" : "0013a20040d4d296",
 			"Fence4" : "0013a20040dcb2f8",
 			"Fence5" : "0013a20040c70d18",
-			"Fence6" : "",
-			"Fence7" : ""
+			"Fence6" : "0013a20040bdd482",
+			"Fence7" : "0013a20040d4d2b5"
 		}
 }

@@ -120,6 +120,29 @@
     eDataLayers = [];
     results = [];
                 
+    
+    tD3.forEach(function(element, index){
+
+        eDataLayers.push(L.circleMarker(element.latlon, {
+            radius: 5,
+            fillColor: getColorFromRSSI(element.rssi-20), 
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).bindPopup("<b>" + element.rssi + "</b>"));
+    });    
+    tD4.forEach(function(element, index){
+
+        eDataLayers.push(L.circleMarker(element.latlon, {
+            radius: 5,
+            fillColor: getColorFromRSSI(element.rssi-20), 
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).bindPopup("<b>" + element.rssi + "</b>"));
+    });
     testData2.forEach(function(element, index){
 
         eDataLayers.push(L.circleMarker(element.latlon, {
@@ -131,7 +154,7 @@
             fillOpacity: 0.8
         }).bindPopup("<b>" + element.rssi + "</b>"));
     });
-        var eDataLayersGroup = L.layerGroup(eDataLayers).addTo(map);
+        // var eDataLayersGroup = L.layerGroup(eDataLayers).addTo(map);
 
     // io.socket.get("/gps?limit=4000&sort=id%20desc",function(s){
     //     console.log(s);

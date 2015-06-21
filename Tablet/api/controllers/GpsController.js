@@ -26,6 +26,8 @@ var xbeeAPI = new xbee_api.XBeeAPI({
 });
 
 //create a new instance. arguments are serial port and baud rate
+if (false)
+{
 setTimeout(function(){
 	
 var exec = require('child_process').exec;
@@ -50,7 +52,7 @@ exec('"C:\\Program Files\\Internet Explorer\\iexplore.exe" http://localhost', fu
 	try{
 		var g = new serialgps(settings.GPSPort,9600);
 	}catch(e){
-		// console.log(e);
+		 console.log(e);
 	}
 //monitor for data
 	var count = 0;
@@ -323,7 +325,7 @@ exec('"C:\\Program Files\\Internet Explorer\\iexplore.exe" http://localhost', fu
 
 }, 5000);
 
-
+}
 
 module.exports = {
 	
