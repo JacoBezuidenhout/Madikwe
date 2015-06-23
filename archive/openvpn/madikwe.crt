@@ -1,0 +1,97 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 3 (0x3)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=ZA, ST=GP, L=Pretoria, O=MTGGroup, OU=Conservation Sense, CN=mtggroup.co/name=server/emailAddress=root@mtggroup.co
+        Validity
+            Not Before: Feb 24 17:24:17 2015 GMT
+            Not After : Feb 21 17:24:17 2025 GMT
+        Subject: C=ZA, ST=GP, L=Pretoria, O=MTGGroup, OU=Conservation Sense, CN=madikwe/name=server/emailAddress=root@mtggroup.co
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:a6:02:f4:e1:e6:29:1a:a3:c1:63:10:7a:bc:61:
+                    87:8e:a5:bc:d6:69:fd:b9:67:4d:70:56:65:5c:8d:
+                    26:ca:ae:e8:d0:10:23:a4:2d:ca:45:03:87:c0:3c:
+                    40:cb:47:b4:de:7d:0c:de:ae:74:19:6f:3a:7f:c4:
+                    93:77:48:78:78:84:32:b4:02:c4:3b:d6:be:eb:c1:
+                    d7:65:70:ca:48:58:3e:14:c5:cd:d7:bd:42:fa:11:
+                    85:6d:91:75:b1:a7:6a:3f:e6:51:6b:ef:90:b7:26:
+                    8c:7b:4a:38:66:2c:95:09:17:20:90:b2:cc:57:76:
+                    91:d2:fa:01:76:76:e0:b0:3b:7b:b8:49:0d:f9:32:
+                    67:39:6d:39:32:ab:ad:3b:fe:2e:cd:4a:3b:e0:bc:
+                    eb:7d:b3:9a:a9:99:99:9a:7e:8f:0e:6c:80:13:b3:
+                    c6:77:2e:5e:c2:f4:82:71:0e:29:07:c5:5f:63:58:
+                    c6:8c:cf:55:22:aa:d2:5b:71:a7:a5:da:33:47:43:
+                    f6:33:3d:43:e1:e6:78:5d:91:ac:76:0c:63:c6:a0:
+                    82:23:86:4c:1e:b8:8b:46:45:d6:a1:0f:de:eb:aa:
+                    8a:a6:c5:fe:2c:e1:58:12:6b:cc:56:44:84:42:89:
+                    ee:21:e0:59:af:7a:67:bc:47:6d:5e:be:16:e1:d8:
+                    9a:25
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                Easy-RSA Generated Certificate
+            X509v3 Subject Key Identifier: 
+                B8:CB:A9:F1:1C:E1:C8:D3:8A:8F:E3:C7:8A:6F:69:2B:D2:C1:FE:8F
+            X509v3 Authority Key Identifier: 
+                keyid:4E:10:17:BD:A6:42:53:11:15:60:59:FA:5D:EE:8D:42:54:6C:AC:9E
+                DirName:/C=ZA/ST=GP/L=Pretoria/O=MTGGroup/OU=Conservation Sense/CN=mtggroup.co/name=server/emailAddress=root@mtggroup.co
+                serial:FF:EC:CE:6C:FE:38:C2:3D
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+            X509v3 Subject Alternative Name: 
+                DNS:madikwe
+    Signature Algorithm: sha256WithRSAEncryption
+         1c:91:8f:49:1f:56:a4:6a:7f:64:97:43:a1:69:d0:33:31:19:
+         98:88:4c:d9:67:85:a7:b4:4e:5c:20:99:94:02:d6:ef:09:9c:
+         93:e7:2b:a9:2d:04:e7:3f:91:72:87:ca:3e:3b:42:ef:71:4c:
+         53:30:74:82:26:7c:af:cd:28:4f:ad:02:05:dc:75:6f:17:1b:
+         e3:69:d8:e6:14:6a:62:55:e5:94:6a:cb:4d:ff:89:42:f4:bd:
+         ea:04:30:70:c5:e8:4e:58:1c:62:90:10:e0:45:ae:98:e5:fb:
+         eb:f2:5b:44:3b:59:6e:05:b5:d3:7b:d5:e6:ce:64:11:d0:2d:
+         68:09:e0:dd:74:2b:2d:3f:b5:bc:f1:fe:83:2d:9d:2f:5e:42:
+         e4:91:3e:50:c0:81:e1:a4:79:6a:91:36:f5:dd:c0:75:4f:8d:
+         cd:fe:65:23:1f:34:94:d4:53:08:0b:d4:28:8d:25:a9:c7:f8:
+         1c:66:e3:82:ef:05:8b:d9:31:57:8e:13:9d:81:32:2e:97:97:
+         5e:f0:1c:c0:10:04:bd:99:b4:aa:99:ea:ed:b1:80:84:90:7e:
+         ec:cb:b7:4a:14:58:98:cc:06:b1:69:74:c1:18:b3:d9:43:2d:
+         bb:b4:43:06:da:44:eb:6f:ce:c1:69:23:9e:0f:83:7d:d4:0b:
+         0c:62:9f:da
+-----BEGIN CERTIFICATE-----
+MIIFNTCCBB2gAwIBAgIBAzANBgkqhkiG9w0BAQsFADCBpTELMAkGA1UEBhMCWkEx
+CzAJBgNVBAgTAkdQMREwDwYDVQQHEwhQcmV0b3JpYTERMA8GA1UEChMITVRHR3Jv
+dXAxGzAZBgNVBAsTEkNvbnNlcnZhdGlvbiBTZW5zZTEUMBIGA1UEAxMLbXRnZ3Jv
+dXAuY28xDzANBgNVBCkTBnNlcnZlcjEfMB0GCSqGSIb3DQEJARYQcm9vdEBtdGdn
+cm91cC5jbzAeFw0xNTAyMjQxNzI0MTdaFw0yNTAyMjExNzI0MTdaMIGhMQswCQYD
+VQQGEwJaQTELMAkGA1UECBMCR1AxETAPBgNVBAcTCFByZXRvcmlhMREwDwYDVQQK
+EwhNVEdHcm91cDEbMBkGA1UECxMSQ29uc2VydmF0aW9uIFNlbnNlMRAwDgYDVQQD
+EwdtYWRpa3dlMQ8wDQYDVQQpEwZzZXJ2ZXIxHzAdBgkqhkiG9w0BCQEWEHJvb3RA
+bXRnZ3JvdXAuY28wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCmAvTh
+5ikao8FjEHq8YYeOpbzWaf25Z01wVmVcjSbKrujQECOkLcpFA4fAPEDLR7TefQze
+rnQZbzp/xJN3SHh4hDK0AsQ71r7rwddlcMpIWD4Uxc3XvUL6EYVtkXWxp2o/5lFr
+75C3Jox7SjhmLJUJFyCQssxXdpHS+gF2duCwO3u4SQ35Mmc5bTkyq607/i7NSjvg
+vOt9s5qpmZmafo8ObIATs8Z3Ll7C9IJxDikHxV9jWMaMz1UiqtJbcael2jNHQ/Yz
+PUPh5nhdkax2DGPGoIIjhkweuItGRdahD97rqoqmxf4s4VgSa8xWRIRCie4h4Fmv
+eme8R21evhbh2JolAgMBAAGjggFwMIIBbDAJBgNVHRMEAjAAMC0GCWCGSAGG+EIB
+DQQgFh5FYXN5LVJTQSBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFLjL
+qfEc4cjTio/jx4pvaSvSwf6PMIHaBgNVHSMEgdIwgc+AFE4QF72mQlMRFWBZ+l3u
+jUJUbKyeoYGrpIGoMIGlMQswCQYDVQQGEwJaQTELMAkGA1UECBMCR1AxETAPBgNV
+BAcTCFByZXRvcmlhMREwDwYDVQQKEwhNVEdHcm91cDEbMBkGA1UECxMSQ29uc2Vy
+dmF0aW9uIFNlbnNlMRQwEgYDVQQDEwttdGdncm91cC5jbzEPMA0GA1UEKRMGc2Vy
+dmVyMR8wHQYJKoZIhvcNAQkBFhByb290QG10Z2dyb3VwLmNvggkA/+zObP44wj0w
+EwYDVR0lBAwwCgYIKwYBBQUHAwIwCwYDVR0PBAQDAgeAMBIGA1UdEQQLMAmCB21h
+ZGlrd2UwDQYJKoZIhvcNAQELBQADggEBAByRj0kfVqRqf2SXQ6Fp0DMxGZiITNln
+hae0TlwgmZQC1u8JnJPnK6ktBOc/kXKHyj47Qu9xTFMwdIImfK/NKE+tAgXcdW8X
+G+Np2OYUamJV5ZRqy03/iUL0veoEMHDF6E5YHGKQEOBFrpjl++vyW0Q7WW4FtdN7
+1ebOZBHQLWgJ4N10Ky0/tbzx/oMtnS9eQuSRPlDAgeGkeWqRNvXdwHVPjc3+ZSMf
+NJTUUwgL1CiNJanH+Bxm44LvBYvZMVeOE52BMi6Xl17wHMAQBL2ZtKqZ6u2xgISQ
+fuzLt0oUWJjMBrFpdMEYs9lDLbu0QwbaROtvzsFpI54Pg33UCwxin9o=
+-----END CERTIFICATE-----
