@@ -53,6 +53,87 @@ var defaultLayerDataNodes = {
 {
             "type": "Feature",
             "properties": {
+                "name": "19",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.497260,
+                    -24.764171, 
+                    981.864990234375
+                ]
+            }
+        },
+{
+            "type": "Feature",
+            "properties": {
+                "name": "18",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.485658, 
+                    -24.758713, 
+                    981.864990234375
+                ]
+            }
+        },
+
+{
+            "type": "Feature",
+            "properties": {
+                "name": "8",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.479960,
+                    -24.777260, 
+                    981.864990234375
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "17",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.481185,
+                    -24.771576, 
+                    981.864990234375
+                ]
+            }
+        },
+{
+            "type": "Feature",
+            "properties": {
+                "name": "20",
+                "time": "2015-05-13T20:46:09Z",
+                "sym": "Waypoint"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    26.474746,
+                    -24.784761,
+                    981.864990234375
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
                 "name": "1",
                 "time": "2015-05-13T20:46:09Z",
                 "sym": "Waypoint"
