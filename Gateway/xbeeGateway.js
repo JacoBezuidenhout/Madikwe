@@ -70,7 +70,7 @@ var sendData = function(data,id)
 			setTimeout(broadcast('NI',[]), Math.random(5000));
 			setTimeout(broadcast('TP',[]), Math.random(5000));
             setTimeout(broadcast('DB',[]), Math.random(5000));
-			setTimeout(broadcast('IR',"FFFF"), Math.random(5000));
+			setTimeout(broadcast('IR',[0xff,0xff]), Math.random(5000));
 		}, 20000);
 
 		// var lat = -26;
