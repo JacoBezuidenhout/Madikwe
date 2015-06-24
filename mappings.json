@@ -38,5 +38,11 @@
 			"Fence5" : "0013a20040c70d18",
 			"Fence6" : "0013a20040bdd482",
 			"Fence7" : "0013a20040d4d2b5"
+		},
+	"collar" :
+		{
+			"CollarA" : "0013a20040d4d97c",			
+			"CollarB" : "0013a20040d4d981",			
+			"CollarC" : "0013a20040e80045"			
 		}
 }
