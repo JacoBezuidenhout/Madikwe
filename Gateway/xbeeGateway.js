@@ -67,10 +67,11 @@ var sendData = function(data,id)
 		if (settings.debug) console.log("Connection Successful\n\nStarting Intervals");
 		setInterval(
 		function(){
-			setTimeout(broadcast('NI',[]), Math.random(5000));
-			setTimeout(broadcast('TP',[]), Math.random(5000));
-            setTimeout(broadcast('DB',[]), Math.random(5000));
-			setTimeout(broadcast('IR',new Buffer([0xFF,0xFF])), Math.random(5000));
+			setTimeout(broadcast('NI',[]), Math.round(Math.random()*5000));
+			setTimeout(broadcast('TP',[]), Math.round(Math.random()*5000));
+            setTimeout(broadcast('DB',[]), Math.round(Math.random()*5000));
+            setTimeout(broadcast('IR',new Buffer([0xFF,0xFF])), Math.round(Math.random()*5000));
+			setTimeout(broadcast('D1',new Buffer([0x02])), Math.round(Math.random()*5000));
 		}, 20000);
 
 		// var lat = -26;
