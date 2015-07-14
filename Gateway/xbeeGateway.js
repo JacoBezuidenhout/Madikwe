@@ -171,7 +171,8 @@ var sendData = function(data,id)
         	case 144:
 	    		socket.emit('frame',frame);
                 if (settings.debug) console.log("FRAME",frame);
-                
+                if (settings.debug) console.log("GPS",frame.data.toString('utf-8'));
+
     			// if (settings.debug) console.log(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data));
     			// var data = (String.fromCharCode.apply(String, frame.data.toJSON().data));
                 // console.log('GPS',data);  
