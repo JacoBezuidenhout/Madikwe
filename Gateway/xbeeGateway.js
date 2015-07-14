@@ -170,9 +170,11 @@ var sendData = function(data,id)
     			break;
         	case 144:
 	    		socket.emit('frame',frame);
-    			if (settings.debug) console.log(JSON.parse(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data)));
-    			var data = (String.fromCharCode.apply(String, frame.data.toJSON().data));
-console.log('GPS',data);  
+                if (settings.debug) console.log("FRAME",frame);
+                
+    			// if (settings.debug) console.log(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data));
+    			// var data = (String.fromCharCode.apply(String, frame.data.toJSON().data));
+                // console.log('GPS',data);  
 //  			data.tracker = frame.remote64;
 //	    		socket.emit('frame',frame);
 //    			socket.emit('gps',data);
