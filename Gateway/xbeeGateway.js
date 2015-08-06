@@ -227,7 +227,7 @@ var sendData = function(data,id)
                         console.log('New Packet',new Buffer(line), xbeeAPI.canParse(new Buffer(line)));
                         if (xbeeAPI.canParse(new Buffer(line)))
                         {
-                            (xbeeAPI.parseFrame(new Buffer(line)));
+                            runWithFrame(xbeeAPI.parseFrame(new Buffer(line)));
                         }
                     }
 
