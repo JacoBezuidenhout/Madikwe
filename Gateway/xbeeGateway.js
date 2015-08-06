@@ -29,8 +29,8 @@ var xbeeAPI = new xbee_api.XBeeAPI({
 });
  
 var serialport = new SerialPort(settings.XBeePort, {
-  baudrate: 9600,
-parser: serialport.parsers.readline("\n")
+  baudrate: 9600
+//parser: serialport.parsers.readline("\n")
   // parser: xbeeAPI.rawParser()
 });
 
@@ -38,8 +38,36 @@ if (settings.debug) console.log('Settings Loaded',settings);
 
 serialport.on("open", function() {
 
+    var line = [];
+    
     serialport.on("data",function(buffer){
-        console.log(buffer);
+        for (var i =0; i< buffer.length; i++)
+        {
+            if (buffer[i] == new Buffer('~')[0])
+            {
+
+try
+                {
+
+                    if (line.length > 0)
+                    { 
+                        console.log('New Packet',new Buffer(line), xbeeAPI.canParse(new Buffer(line)));
+                        if (xbeeAPI.canParse(new Buffer(line)))
+                        {
+                            console.log(xbeeAPI.parseFrame(new Buffer(line)));
+                        }
+                    }
+
+                }
+                catch(e)
+                {
+                    console.log(e);
+                }
+
+                line = [];
+            }
+            line.push(buffer[i]);
+        }
     });
 
 var broadcast = function(cmd,val)
