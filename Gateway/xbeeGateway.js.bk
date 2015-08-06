@@ -11,9 +11,6 @@
 
 */
 
-try
-{
-
 var socket;
 
 var util = require('util');
@@ -30,17 +27,12 @@ var xbeeAPI = new xbee_api.XBeeAPI({
  
 var serialport = new SerialPort(settings.XBeePort, {
   baudrate: 9600,
-parser: serialport.parsers.readline("\n")
-  // parser: xbeeAPI.rawParser()
+  parser: xbeeAPI.rawParser()
 });
 
 if (settings.debug) console.log('Settings Loaded',settings);
 
 serialport.on("open", function() {
-
-    serialport.on("data",function(buffer){
-        console.log(buffer);
-    });
 
 var broadcast = function(cmd,val)
 {
@@ -179,7 +171,20 @@ var sendData = function(data,id)
         	case 144:
 	    		socket.emit('frame',frame);
                 if (settings.debug) console.log("FRAME",frame);
-                if (settings.debug) console.log("GPS",frame.data.toString('utf-8'));
+
+		var line = frame.data.toString('utf-8');
+
+                if (settings.debug) console.log("GPS", line, line.indexOf("lat:"),line.indexOf("lon:"));
+		if (line.indexOf("lat:") == 19 && line.indexOf("lon:") == 36)
+	{
+		line = JSON.parse(line.replace('tracker', '"tracker"').replace('lat', '"lat"').replace('lon', '"lon"'));
+		line.tracker = frame.remote64;
+    		socket.emit('gps',line);
+		console.log('http://10.8.0.10/map/create?tracker=' + line.tracker +'&lat=' + line.lat + '&lon=' + line.lon);
+	}
+
+
+
 
     			// if (settings.debug) console.log(String.fromCharCode.apply(String, JSON.parse(JSON.stringify(frame.data)).data));
     			// var data = (String.fromCharCode.apply(String, frame.data.toJSON().data));
@@ -216,9 +221,3 @@ console.log(e);
 
 
 });
-
-}
-catch (e)
-{
-    console.log('GLOBAL',e);
-}
