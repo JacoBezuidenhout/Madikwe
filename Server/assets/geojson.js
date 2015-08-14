@@ -50,6 +50,27 @@ var defaultLayerDataNodes = {
     "type": "FeatureCollection",
     "features": [
 
+
+{
+    "type": "Feature",
+    "properties": 
+    {
+        "name": "old20",
+        "time": "2015-05-13T20:46:09Z",
+        "sym": "Waypoint"
+    },
+    "geometry": 
+    {
+        "type": "Point",
+        "coordinates": 
+        [
+            26.477260,
+            -24.864171,
+            981.864990234375
+        ]
+    }
+},
+
 {
             "type": "Feature",
             "properties": {

@@ -163,7 +163,7 @@ $(document).ready(function(){
                 "Electric Fence" : eFenceLayerGroup
             };
             var maps = {
-                "Background" : mapbox
+                "Background" : mapbox 
             };
             var control = L.control.layers(maps,layers).addTo(map);
     
@@ -179,7 +179,7 @@ $(document).ready(function(){
                 console.log(alert);
             });
 
-            io.socket.get("/map",function(all){
+            io.socket.get("/map?sort=createdAt%20DESClimit=250",function(all){
                 var routes = [];
 
                 all.forEach(function(element, index){
@@ -195,7 +195,10 @@ $(document).ready(function(){
                     control.addOverlay(p[element.tracker],element.tracker);
                   }
                   else
-                    p[element.tracker].addLatLng([element.lat,element.lon]);
+                  {
+                    if (element.lat < 0 && element.lon > 0) 
+                        p[element.tracker].addLatLng([element.lat,element.lon]);
+                  }
 
                 });
 
